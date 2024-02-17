@@ -23,6 +23,13 @@ export const ShoopingCart = () => {
   useEffect(()=>{
   getData()
   },[])
+  function sum(){
+    let sum = 0
+    products.forEach((product)=>{
+      sum += Number(product.price)
+    })
+    return sum
+  }
   return (
     <Container>
    
@@ -47,7 +54,7 @@ export const ShoopingCart = () => {
             <Paper>
             <Box padding={2}>
               <Typography variant="h6">Subtotal and checkout </Typography>
-              <Typography variant="body1">x amount of money </Typography>
+              <Typography variant="body1">SubTotal : {sum()} $ </Typography>
               <Button variant="contained">Proceed to checkout</Button>
             </Box>
             </Paper>
