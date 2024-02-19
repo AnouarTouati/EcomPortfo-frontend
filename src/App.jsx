@@ -1,33 +1,58 @@
 import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
-import { Header } from "./components/Header";
+
 import getAxios from "./Axios";
 import { Link } from "react-router-dom";
 import { Container, Grid, Typography } from "@mui/material";
+import { Product } from "./components/ShoppingCart/Product";
+import { default as Header } from "./components/PrimarySearchAppBar";
 function App() {
-  const [products, setProducts] = useState({});
+  const [products, setProducts] = useState([]);
   async function testAxios() {
     const axios = await getAxios();
-    // const data1 = await axios.get("http://localhost:80/api/test");
-    // console.log(data1);
+    const data1 = await axios.get("http://localhost:80/api/products");
+    console.log(data1);
     // const result = await axios.post("http://localhost:80/api/cart/products",{product_id:1})
     // console.log(result)
     // const data = await axios.get("http://localhost:80/api/cart/products")
     // console.log(data)
   }
+  async function getProducts() {
+    const axios = await getAxios();
+    const result = await axios.get("http://localhost:80/api/products");
+    setProducts(result.data);
+  }
   useEffect(() => {
-    testAxios();
+    // testAxios();
+    getProducts();
   }, []);
   return (
-    <Container>
-      <Grid container spacing={2}>
-        <Grid element xs={4}>
-          <Typography variant="h1">feqfqef</Typography>
-        </Grid>
-      </Grid>
-    </Container>
+    <>
+      <Header />
+      <Container>
+        <div>
+          <Typography paddingBottom={2} align={"center"} variant="h3">
+            Our Products
+          </Typography>
+
+          <Grid container spacing={2}>
+            {products.map((product) => {
+              return (
+                <Grid key={product.id} item xs={3}>
+                  <Product
+                    name={product.name}
+                    id={product.id}
+                    price={product.price}
+                    description={product.description}
+                    showAddToCartButton={true}
+                  />
+                </Grid>
+              );
+            })}
+          </Grid>
+        </div>
+      </Container>
+    </>
   );
 }
 
