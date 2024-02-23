@@ -48,7 +48,7 @@ export const ShoopingCart = () => {
               { products.length ?
               products.map((item, index) => {
                 return (
-                  <Product key={index} name={item.name} price={item.price} />
+                  <Product id={item.id} key={index} name={item.name} price={item.price} quantity={item.pivot.quantity} quantityChangedCallback={getData}/>
                 );
               }):
               <Typography padding={2} align="center" variant="h6">No items</Typography>
