@@ -16,27 +16,33 @@ export const Product = ({
     const result = await axios.post("http://localhost:80/api/cart/products", {
       product_id: id,
     });
-    
   }
   async function increase(productId) {
     const axios = await getAxios();
     const result = await axios.post(
       `http://localhost:80/api/cart/products/${productId}/quantity/increase`
     );
-    quantityChangedCallback()
+    quantityChangedCallback();
   }
   async function decrease(productId) {
     const axios = await getAxios();
     const result = await axios.post(
       `http://localhost:80/api/cart/products/${productId}/quantity/decrease`
     );
-    quantityChangedCallback()
+    quantityChangedCallback();
+  }
+  async function remove(productId) {
+    const axios = await getAxios();
+    const result = await axios.delete(
+      `http://localhost:80/api/cart/products/${productId}`
+    );
+    quantityChangedCallback();
   }
   return (
     <Card elevation={6}>
       <Box padding={2}>
         <Grid container spacing={2}>
-          <Grid item xs={quantity ? 8 : 12}>
+          <Grid item xs={quantity ? 6 : 12}>
             <Typography component="h4" variant="h4">
               {name}
             </Typography>
@@ -61,24 +67,34 @@ export const Product = ({
             )}
           </Grid>
           {quantity ? (
-            <Grid item xs={4}>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  increase(id);
-                }}
-              >
-                Increase
-              </Button>
-              <Typography variant="h5" component="h5">
-                Quantity : {quantity}
-              </Typography>
-              <Button variant="contained"
-               onClick={() => {
-                decrease(id);
-              }}
-              >Decrease</Button>
-            </Grid>
+            <>
+              <Grid item xs={4}>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    increase(id);
+                  }}
+                >
+                  Increase
+                </Button>
+                <Typography variant="h5" component="h5">
+                  Quantity : {quantity}
+                </Typography>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    decrease(id);
+                  }}
+                >
+                  Decrease
+                </Button>
+              </Grid>
+              <Grid item xs={2}>
+                <Button variant="contained" onClick={()=>{
+                  remove(id);
+                }}>Remove</Button>
+              </Grid>
+            </>
           ) : (
             ""
           )}
