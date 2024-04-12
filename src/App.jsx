@@ -8,6 +8,15 @@ import { Product } from "./components/ShoppingCart/Product";
 import { default as Header } from "./components/PrimarySearchAppBar";
 function App() {
   const [products, setProducts] = useState([]);
+  const [productsInCartCount,setProductsInCartCount] = useState(0);
+
+  async function getCartProductsCount(){
+    console.log('get cart products count')
+    const axios = await getAxios() 
+    const result = await axios.get("http://localhost:80/api/cart/products/count")
+   
+    setProductsInCartCount(result.data.count)
+  }
   async function testAxios() {
     const axios = await getAxios();
     const data1 = await axios.get("http://localhost:80/api/products");
@@ -25,10 +34,11 @@ function App() {
   useEffect(() => {
     // testAxios();
     getProducts();
+    getCartProductsCount();
   }, []);
   return (
     <>
-      <Header />
+      <Header cartProductCount={productsInCartCount}/>
       <Container>
         <div>
           <Typography paddingBottom={2} align={"center"} variant="h3">
@@ -45,6 +55,7 @@ function App() {
                     price={product.price}
                     description={product.description}
                     showAddToCartButton={true}
+                    quantityChangedCallback={getCartProductsCount}
                   />
                 </Grid>
               );

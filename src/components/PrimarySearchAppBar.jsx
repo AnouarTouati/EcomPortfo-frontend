@@ -16,7 +16,7 @@ import ShoppingCart from '@mui/icons-material/ShoppingCart'
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from 'react-router-dom';
-import getAxios from '../Axios';
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -57,22 +57,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function PrimarySearchAppBar({cartProductCount}) {
   const navigate = useNavigate()
-  const [cartProductCount,setCartProductCount] = React.useState(0)
-
-  async function getCartProductsCount(){
-    const axios = await getAxios() 
-    const result = await axios.get("http://localhost:80/api/cart/products/count")
-   
-    setCartProductCount(result.data.count)
-  }
-  React.useEffect(()=>{
-    getCartProductsCount()
-  },[])
-
-
-
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);

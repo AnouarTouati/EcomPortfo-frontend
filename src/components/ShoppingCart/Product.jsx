@@ -16,6 +16,7 @@ export const Product = ({
     const result = await axios.post("http://localhost:80/api/cart/products", {
       product_id: id,
     });
+    quantityChangedCallback();
   }
   async function increase(productId) {
     const axios = await getAxios();
