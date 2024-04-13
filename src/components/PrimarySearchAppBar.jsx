@@ -16,6 +16,7 @@ import ShoppingCart from '@mui/icons-material/ShoppingCart'
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from 'react-router-dom';
+import getAxios from '../Axios';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -57,7 +58,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar({cartProductCount}) {
+export default function PrimarySearchAppBar({cartItemsCount}) {
+
   const navigate = useNavigate()
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -124,7 +126,7 @@ export default function PrimarySearchAppBar({cartProductCount}) {
     >
       <MenuItem onClick={()=>{navigate('/cart')}}>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={cartProductCount} color="error">
+          <Badge badgeContent={cartItemsCount} color="error">
             <ShoppingCart />
           </Badge>
         </IconButton>
@@ -190,7 +192,7 @@ export default function PrimarySearchAppBar({cartProductCount}) {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton onClick={()=>{navigate('/cart')}} size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={cartProductCount} color="error">
+              <Badge badgeContent={cartItemsCount} color="error">
                 <ShoppingCart />
               </Badge>
             </IconButton>

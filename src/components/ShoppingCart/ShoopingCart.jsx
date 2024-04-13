@@ -11,17 +11,18 @@ import {
 import React, { useEffect, useState } from "react";
 import { Product } from "./Product";
 import getAxios from "../../Axios";
-import { default as Header } from "../PrimarySearchAppBar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 export const ShoopingCart = () => {
   const navigate = useNavigate()
   const [products, setProducts] = useState([]);
+  const getCartItemsCount = useOutletContext()
   async function getData() {
     const axios = await getAxios();
     const fetchResult = await axios.get(
       "http://localhost:80/api/cart/products"
     );
     setProducts(fetchResult.data);
+    getCartItemsCount();
   }
   useEffect(() => {
     getData();
@@ -35,7 +36,6 @@ export const ShoopingCart = () => {
   }
   return (
     <>
-      <Header />
       <Container>
         <Grid container spacing={2}>
           <Grid item xs={8}>

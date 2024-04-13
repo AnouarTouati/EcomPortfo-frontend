@@ -1,6 +1,5 @@
 import { Container, Typography, TextField, Button } from "@mui/material";
 import React, { useState } from "react";
-import { default as Header } from "./PrimarySearchAppBar";
 import getAxios from "../Axios";
 export const Checkout = () => {
   const [email,setEmail] = useState("")
@@ -10,11 +9,9 @@ export const Checkout = () => {
     const result = await axios.post('http://localhost:80/api/order',{
       email:email
     })
-    console.log(result)
   }
   return (
     <>
-      <Header />
       <Container>
         <Typography padding={2} variant="h4">Please provide your email address to proceed</Typography>
         <TextField onChange={(event)=>{setEmail(event.target.value)}} padding={2} id="outlined-basic" label="Email" variant="outlined" />
