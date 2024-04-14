@@ -6,9 +6,10 @@ export const Checkout = () => {
 
   async function submit(){
     const axios = await getAxios()
-    const result = await axios.post('http://localhost:80/api/order',{
+    const result = await axios.post('http://localhost:80/api/checkout',{
       email:email
     })
+    window.location.href = result.data.url
   }
   return (
     <>
