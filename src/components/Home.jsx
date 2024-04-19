@@ -9,22 +9,12 @@ function Home() {
   const [products, setProducts] = useState([]);
   const getCartItemsCount = useOutletContext()
 
-  async function testAxios() {
-    const axios = await getAxios();
-    const data1 = await axios.get("http://localhost:80/api/products");
-    console.log(data1);
-    // const result = await axios.post("http://localhost:80/api/cart/products",{product_id:1})
-    // console.log(result)
-    // const data = await axios.get("http://localhost:80/api/cart/products")
-    // console.log(data)
-  }
   async function getProducts() {
     const axios = await getAxios();
-    const result = await axios.get("http://localhost:80/api/products");
+    const result = await axios.get("/products");
     setProducts(result.data);
   }
   useEffect(() => {
-    // testAxios();
     getProducts();
    
   }, []);

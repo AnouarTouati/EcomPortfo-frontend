@@ -8,7 +8,7 @@ export const Layout = () => {
 
   async function getCartItemsCount(){
     const axios = await getAxios() 
-    const result = await axios.get("http://localhost:80/api/cart/products/count")
+    const result = await axios.get("/cart/products/count")
     setCartItemsCount(result.data.count)
   }
 

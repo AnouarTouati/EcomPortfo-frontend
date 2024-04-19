@@ -19,7 +19,7 @@ export const ShoopingCart = () => {
   async function getData() {
     const axios = await getAxios();
     const fetchResult = await axios.get(
-      "http://localhost:80/api/cart/products"
+      "/cart/products"
     );
     setProducts(fetchResult.data);
     getCartItemsCount();

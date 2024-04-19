@@ -12,6 +12,7 @@ async function getAxios() {
       email: "test@example.com",
       password: "password",
     });
+    axios.defaults.baseURL="http://localhost:80/api"
     axiosInstance = axios.create(axios.defaults)//create an instance with the current global config
     // await axios.post("http://localhost:80/api/logout");
   }

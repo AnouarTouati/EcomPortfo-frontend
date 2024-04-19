@@ -13,7 +13,7 @@ export const Product = ({
 }) => {
   async function addToCart(id) {
     const axios = await getAxios();
-    const result = await axios.post("http://localhost:80/api/cart/products", {
+    const result = await axios.post("/cart/products", {
       product_id: id,
     });
     quantityChangedCallback();
@@ -21,21 +21,21 @@ export const Product = ({
   async function increase(productId) {
     const axios = await getAxios();
     const result = await axios.post(
-      `http://localhost:80/api/cart/products/${productId}/quantity/increase`
+      `/cart/products/${productId}/quantity/increase`
     );
     quantityChangedCallback();
   }
   async function decrease(productId) {
     const axios = await getAxios();
     const result = await axios.post(
-      `http://localhost:80/api/cart/products/${productId}/quantity/decrease`
+      `/cart/products/${productId}/quantity/decrease`
     );
     quantityChangedCallback();
   }
   async function remove(productId) {
     const axios = await getAxios();
     const result = await axios.delete(
-      `http://localhost:80/api/cart/products/${productId}`
+      `cart/products/${productId}`
     );
     quantityChangedCallback();
   }
