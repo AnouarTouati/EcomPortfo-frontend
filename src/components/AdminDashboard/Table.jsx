@@ -22,7 +22,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import getAxios from "../../Axios";
-
+import { useNavigate } from "react-router-dom";
 
 function EnhancedTableHead(props) {
   const {
@@ -32,7 +32,7 @@ function EnhancedTableHead(props) {
     numSelected,
     rowCount,
     onRequestSort,
-    headCells
+    headCells,
   } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -145,7 +145,9 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({headCells}) {
+export default function EnhancedTable({ searchParams, headCells }) {
+  const navigate = useNavigate();
+  const [isLoaded, setIsLoaded] = React.useState(false);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("id");
   const [selected, setSelected] = React.useState([]);
@@ -154,8 +156,8 @@ export default function EnhancedTable({headCells}) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [visibleRows, setVisibleRows] = React.useState([]);
   const [totalRowsInDb, setTotalRowsInDb] = React.useState(0);
-    // Avoid a layout jump when reaching the last page with empty rows.
-  const [emptyRows, setEmptyRows ]= React.useState(0);
+  // Avoid a layout jump when reaching the last page with empty rows.
+  const [emptyRows, setEmptyRows] = React.useState(0);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -205,17 +207,42 @@ export default function EnhancedTable({headCells}) {
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
-  async function getData(pageNumber, rowsPerPage) {
+  async function getData() {
+    const params = {
+      page: page + 1,
+      rowsPerPage: rowsPerPage,
+      order: order,
+      orderBy: orderBy,
+    };
+
     const axios = await getAxios();
     const result = await axios.get("/products", {
-      params: { page: pageNumber + 1, rowsPerPage: rowsPerPage, order:order,orderBy:orderBy },
+      params: params,
     });
-    setEmptyRows(Math.max(0, -(result.data.data.length - rowsPerPage) ))
+
+    const query = result.request.responseURL.replace(result.data.path, "");
+    navigate(query);
+    setEmptyRows(Math.max(0, -(result.data.data.length - rowsPerPage)));
     setTotalRowsInDb(result.data.total);
     setVisibleRows(result.data.data);
+    setIsLoaded(true);
   }
   React.useEffect(() => {
-    getData(page, rowsPerPage);
+    if (isLoaded == false) {
+      if (searchParams.get("page")) {
+        setPage(parseInt(searchParams.get("page")) - 1);
+      }
+      if (searchParams.get("rowsPerPage")) {
+        setRowsPerPage(parseInt(searchParams.get("rowsPerPage")));
+      }
+      if (searchParams.get("order")) {
+        setOrder(searchParams.get("order"));
+      }
+      if (searchParams.get("orderBy")) {
+        setOrderBy(searchParams.get("orderBy"));
+      }
+    }
+    getData();
   }, [order, orderBy, page, rowsPerPage]);
 
   return (
@@ -262,8 +289,7 @@ export default function EnhancedTable({headCells}) {
                         }}
                       />
                     </TableCell>
-
-                    {Object.entries(row).map((entry, index) => {
+                    {headCells.map((entry, index) => {
                       if (index == 0) {
                         return (
                           <TableCell
@@ -273,16 +299,16 @@ export default function EnhancedTable({headCells}) {
                             padding="none"
                             key={row.id + index}
                           >
-                            {entry[1]}
+                            {row[entry.id]}
                           </TableCell>
                         );
                       }
-                      if (entry[0] == "created_at") {
-                        entry[1] = new Date(entry[1]).toDateString();
+                      if (entry.id == "created_at") {
+                        row[entry.id] = new Date(row[entry.id]).toDateString();
                       }
                       return (
                         <TableCell align="right" key={row.id + index}>
-                          {entry[1]}
+                          {row[entry.id]}
                         </TableCell>
                       );
                     })}
@@ -301,15 +327,19 @@ export default function EnhancedTable({headCells}) {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={totalRowsInDb}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+        {isLoaded ? (
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={totalRowsInDb}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        ) : (
+          ""
+        )}
       </Paper>
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}

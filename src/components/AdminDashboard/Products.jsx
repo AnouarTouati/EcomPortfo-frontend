@@ -1,9 +1,13 @@
 import React from "react";
 import Table from "./Table";
+import { useSearchParams } from "react-router-dom";
 export const Products = () => {
+  const [searchParams,setSearchParams] = useSearchParams()
+  
   return (
     <div>
       <Table
+        searchParams={searchParams}
         headCells={[
           {
             id: "id",
@@ -24,7 +28,7 @@ export const Products = () => {
             label: "Description",
           },
           {
-            id: "stripeId",
+            id: "stripe_id",
             numeric: true,
             disablePadding: false,
             label: "Stripe ID",
@@ -36,7 +40,7 @@ export const Products = () => {
             label: "Price",
           },
           {
-            id: "date",
+            id: "created_at",
             numeric: true,
             disablePadding: false,
             label: "Date added",
