@@ -88,7 +88,18 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
+  const { selected, setSelected, resourceURL, reloadCallback, numSelected, name } = props;
+  const deleteSelected = async () => {
+    const axios = await getAxios();
+    let failed = false;
+    //for loop and not forEach to use await and let all deletes happen before calling reloadCallback
+    for (let i = 0; i < selected.length; i++) {
+      const result = await axios.delete(`${resourceURL}/${selected[i]}`);
+      if (result.status != 200) failed = true;
+    }
+    setSelected([])
+    reloadCallback();
+  };
 
   return (
     <Toolbar
@@ -120,12 +131,17 @@ function EnhancedTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Products
+          {name}
         </Typography>
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
+        <Tooltip
+          title="Delete"
+          onClick={() => {
+            deleteSelected();
+          }}
+        >
           <IconButton>
             <DeleteIcon />
           </IconButton>
@@ -143,9 +159,15 @@ function EnhancedTableToolbar(props) {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
-export default function EnhancedTable({ searchParams, headCells }) {
+export default function EnhancedTable({
+  name,
+  resourceURL,
+  searchParams,
+  headCells,
+}) {
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [order, setOrder] = React.useState("asc");
@@ -216,7 +238,7 @@ export default function EnhancedTable({ searchParams, headCells }) {
     };
 
     const axios = await getAxios();
-    const result = await axios.get("/products", {
+    const result = await axios.get(resourceURL, {
       params: params,
     });
 
@@ -248,7 +270,14 @@ export default function EnhancedTable({ searchParams, headCells }) {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          selected={selected}
+          setSelected={setSelected}
+          resourceURL={resourceURL}
+          numSelected={selected.length}
+          name={name}
+          reloadCallback={getData}
+        />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

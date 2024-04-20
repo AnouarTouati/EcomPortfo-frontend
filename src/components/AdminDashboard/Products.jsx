@@ -7,6 +7,8 @@ export const Products = () => {
   return (
     <div>
       <Table
+        name={'Product'}
+        resourceURL={'/products'}
         searchParams={searchParams}
         headCells={[
           {
