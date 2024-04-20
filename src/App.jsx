@@ -11,6 +11,9 @@ import { PaymentFailed } from "./pages/PaymentFailed.jsx";
 import getAxios from "./Axios.js";
 import { AdminDashboardLayout } from "./layouts/AdminDashboardLayout.jsx";
 import { Products } from "./components/AdminDashboard/Products.jsx";
+import { Settings } from "./components/AdminDashboard/Settings.jsx";
+import { Orders } from "./components/AdminDashboard/Orders.jsx";
+import { Dashboard } from "./components/AdminDashboard/Dashboard.jsx";
 const router = createBrowserRouter([
   {
     path:"/",
@@ -44,8 +47,20 @@ const router = createBrowserRouter([
     element: <AdminDashboardLayout />,
     children: [
       {
+        path:"",
+        element: <Dashboard />
+      },
+      {
         path:"products",
         element: <Products />
+      },
+      {
+        path:"orders",
+        element: <Orders />
+      },
+      {
+        path:"settings",
+        element: <Settings />
       }
     ]
   }
