@@ -90,9 +90,9 @@ const Drawer = styled(MuiDrawer, {
 export default function SidebarWithOutlet({ Outlet }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const {hash,pathname,search} = useLocation();
+  const { hash, pathname, search } = useLocation();
   const handleDrawerOpen = () => {
-    console.log(pathname)
+    console.log(pathname);
     setOpen(true);
   };
 
@@ -135,49 +135,49 @@ export default function SidebarWithOutlet({ Outlet }) {
         <Divider />
         <List>
           {[
-            { path: "", name: "Dashboard", icon :  <InboxIcon />},
-            { path: "products", name: "Products",  icon :  <MailIcon />},
-            { path: "orders", name: "Orders", icon :  <InboxIcon /> },
-            { path: "settings", name: "Settings", icon :  <InboxIcon /> },
-          ].map((route, index) =>  {
-            
+            { path: "", name: "Dashboard", icon: <InboxIcon /> },
+            { path: "products", name: "Products", icon: <MailIcon /> },
+            { path: "orders", name: "Orders", icon: <InboxIcon /> },
+            { path: "settings", name: "Settings", icon: <InboxIcon /> },
+          ].map((route, index) => {
             return (
-            <>
-            {
-              index == 3 ? <Divider /> : ''
-            }
-            <ListItem
-              component={Link}
-              to={route.path}
-              key={route.name}
-              disablePadding
-              sx={{ display: "block" }}
-            >
-              <ListItemButton
-              selected={pathname.replace('/admin','') == '/'+route.path || (pathname.replace('/admin','') == '' && route.path=='')}
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
+              <div key={route.name}>
+                {index == 3 ? <Divider /> : ""}
+                <ListItem
+                  component={Link}
+                  to={route.path}
+                  disablePadding
+                  sx={{ display: "block" }}
                 >
-                {route.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={route.name}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </ListItem>
-            </>
-          )})}
+                  <ListItemButton
+                    selected={
+                      pathname.replace("/admin", "") == "/" + route.path ||
+                      (pathname.replace("/admin", "") == "" && route.path == "")
+                    }
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {route.icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={route.name}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </div>
+            );
+          })}
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

@@ -9,7 +9,7 @@ import { Layout } from "./layouts/Layout.jsx";
 import { PaymentSuccess } from "./pages/PaymentSuccess.jsx";
 import { PaymentFailed } from "./pages/PaymentFailed.jsx";
 import getAxios from "./Axios.js";
-import { AdminDashboardLayout } from "./layouts/AdminDashboardLayout.jsx";
+import { AdminDashboardLayout } from "./layouts/AdminDashboardLayout.js";
 import { Products } from "./components/AdminDashboard/Products.jsx";
 import { Settings } from "./components/AdminDashboard/Settings.jsx";
 import { Orders } from "./components/AdminDashboard/Orders.jsx";
