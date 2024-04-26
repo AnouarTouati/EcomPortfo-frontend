@@ -1,12 +1,15 @@
 import React from "react";
-import Table from "./Table";
+// import Table from "./Table";
+import EnhancedTable from "./EnhancedTable";
 import { useSearchParams } from "react-router-dom";
+
+
 export const Products = () => {
   const [searchParams,setSearchParams] = useSearchParams()
-  
+
   return (
     <div>
-      <Table
+      <EnhancedTable
         name={'Product'}
         resourceURL={'/admin/products'}
         searchParams={searchParams}

@@ -9,12 +9,12 @@ export const PaymentSuccess = () => {
   useEffect(() => {
     const stripeSessionId = searchParams.get("session_id");
     if (!stripeSessionId) {
-      setError(true);
+      setProgress('error');
     } else {
       testSessionIdAgainstDb(stripeSessionId);
     }
   }, []);
-  async function testSessionIdAgainstDb(stripeSessionId) {
+  async function testSessionIdAgainstDb(stripeSessionId : string) {
     const axios = await getAxios();
     try {
       const result = await axios.get(

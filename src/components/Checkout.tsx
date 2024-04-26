@@ -32,7 +32,6 @@ export const Checkout = () => {
             onChange={(event) => {
               setEmail(event.target.value);
             }}
-            padding={2}
             id="outlined-basic"
             label="Email"
             variant="outlined"

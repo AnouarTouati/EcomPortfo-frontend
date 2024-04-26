@@ -12,10 +12,19 @@ import React, { useEffect, useState } from "react";
 import { Product } from "./Product";
 import getAxios from "../../Axios";
 import { useNavigate, useOutletContext } from "react-router-dom";
-export const ShoopingCart = () => {
+import {getCartItemsCountType} from'../../layouts/Layout'
+type Product = {
+  id:number,
+  name:string,
+  price:number,
+  pivot : {
+    quantity : number
+  }
+}
+export const ShoppingCart = () => {
   const navigate = useNavigate()
-  const [products, setProducts] = useState([]);
-  const getCartItemsCount = useOutletContext()
+  const [products, setProducts] = useState<Product[]>([]);
+  const getCartItemsCount :getCartItemsCountType = useOutletContext()
   async function getData() {
     const axios = await getAxios();
     const fetchResult = await axios.get(
@@ -46,7 +55,7 @@ export const ShoopingCart = () => {
               <Divider />
 
               { products.length ?
-              products.map((item, index) => {
+              products.map((item:Product, index) => {
                 return (
                   <Product id={item.id} key={index} name={item.name} price={item.price} quantity={item.pivot.quantity} quantityChangedCallback={getData}/>
                 );

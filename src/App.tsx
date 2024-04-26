@@ -1,19 +1,18 @@
 import React, { useEffect } from "react";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { NotFound } from "./components/NotFound.jsx";
-import { Checkout } from "./components/Checkout.jsx";
-import { ShoopingCart } from "./components/ShoppingCart/ShoopingCart.jsx";
-import Home from "./components/Home.jsx";
-import { Layout } from "./layouts/Layout.jsx";
-import { PaymentSuccess } from "./pages/PaymentSuccess.jsx";
-import { PaymentFailed } from "./pages/PaymentFailed.jsx";
-import getAxios from "./Axios.js";
-import { AdminDashboardLayout } from "./layouts/AdminDashboardLayout.js";
-import { Products } from "./components/AdminDashboard/Products.jsx";
-import { Settings } from "./components/AdminDashboard/Settings.jsx";
-import { Orders } from "./components/AdminDashboard/Orders.jsx";
-import { Dashboard } from "./components/AdminDashboard/Dashboard.jsx";
+import { NotFound } from "./components/NotFound.js";
+import { Checkout } from "./components/Checkout.js";
+import { ShoppingCart } from "./components/ShoppingCart/ShoppingCart.tsx";
+import Home from "./components/Home.tsx";
+import { Layout } from "./layouts/Layout.js";
+import { PaymentSuccess } from "./pages/PaymentSuccess.js";
+import { PaymentFailed } from "./pages/PaymentFailed.js";
+import { AdminDashboardLayout } from "./layouts/AdminDashboardLayout.tsx";
+import { Products } from "./components/AdminDashboard/Products.js";
+import { Settings } from "./components/AdminDashboard/Settings.js";
+import { Orders } from "./components/AdminDashboard/Orders.js";
+import { Dashboard } from "./components/AdminDashboard/Dashboard.js";
 const router = createBrowserRouter([
   {
     path:"/",
@@ -27,7 +26,7 @@ const router = createBrowserRouter([
       },
       {
         path: "cart",
-        element: <ShoopingCart />,
+        element: <ShoppingCart />,
       },
       {
         path: "checkout",

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
-import {default as Header} from '../components/PrimarySearchAppBar'
+import AppBar from '../components/AppBar'
 import getAxios from '../Axios'
+
+export type getCartItemsCountType = ()=>{}
 
 export const Layout = () => {
   const [cartItemsCount,setCartItemsCount] = useState(0)
@@ -17,7 +19,7 @@ export const Layout = () => {
   },[])
   return (
     <>
-    <Header cartItemsCount={cartItemsCount}/>
+    <AppBar cartItemsCount={cartItemsCount}/>
     <Outlet context={getCartItemsCount}/>
     </>
   )

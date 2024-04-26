@@ -4,10 +4,16 @@ import getAxios from "../Axios";
 import { Container, Grid, Typography } from "@mui/material";
 import { Product } from "./ShoppingCart/Product";
 import { useOutletContext } from "react-router-dom";
-
+import { getCartItemsCountType } from '../layouts/Layout'
+type Product = {
+  name : string,
+  id : number,
+  price:number
+  description:string
+}
 function Home() {
-  const [products, setProducts] = useState([]);
-  const getCartItemsCount = useOutletContext()
+  const [products, setProducts] = useState<Product[]>([]);
+  const getCartItemsCount : getCartItemsCountType  = useOutletContext()
 
   async function getProducts() {
     const axios = await getAxios();

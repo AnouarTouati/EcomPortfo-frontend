@@ -1,5 +1,4 @@
 import * as React from "react";
-import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -24,7 +23,29 @@ import { visuallyHidden } from "@mui/utils";
 import getAxios from "../../Axios";
 import { useNavigate } from "react-router-dom";
 
-function EnhancedTableHead(props) {
+type Order = "asc" | "desc";
+
+interface HeadCell {
+  disablePadding: boolean;
+  id: string;
+  label: string;
+  numeric: boolean;
+}
+
+interface EnhancedTableProps {
+  numSelected: number;
+  onRequestSort: (
+    event: React.MouseEvent<unknown>,
+    property: string
+  ) => void;
+  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  order: Order;
+  orderBy: string;
+  rowCount: number;
+  headCells: HeadCell[];
+}
+
+function EnhancedTableHead(props: EnhancedTableProps) {
   const {
     onSelectAllClick,
     order,
@@ -34,9 +55,10 @@ function EnhancedTableHead(props) {
     onRequestSort,
     headCells,
   } = props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
+  const createSortHandler =
+    (property: string) => (event: React.MouseEvent<unknown>) => {
+      onRequestSort(event, property);
+    };
 
   return (
     <TableHead>
@@ -52,7 +74,7 @@ function EnhancedTableHead(props) {
             }}
           />
         </TableCell>
-        {headCells.map((headCell) => (
+        {headCells.map((headCell:HeadCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
@@ -78,17 +100,24 @@ function EnhancedTableHead(props) {
   );
 }
 
-EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-};
+interface EnhancedTableToolbarProps {
+  selected: readonly number[];
+  setSelected: React.Dispatch<React.SetStateAction<readonly number[]>>;
+  resourceURL: string;
+  reloadCallback: () => {};
+  numSelected: number;
+  name: string;
+}
 
-function EnhancedTableToolbar(props) {
-  const { selected, setSelected, resourceURL, reloadCallback, numSelected, name } = props;
+function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
+  const {
+    selected,
+    setSelected,
+    resourceURL,
+    reloadCallback,
+    numSelected,
+    name,
+  } = props;
   const deleteSelected = async () => {
     const axios = await getAxios();
     let failed = false;
@@ -97,7 +126,7 @@ function EnhancedTableToolbar(props) {
       const result = await axios.delete(`${resourceURL}/${selected[i]}`);
       if (result.status != 200) failed = true;
     }
-    setSelected([])
+    setSelected([]);
     reloadCallback();
   };
 
@@ -131,10 +160,9 @@ function EnhancedTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          {name}
+          Nutrition
         </Typography>
       )}
-
       {numSelected > 0 ? (
         <Tooltip
           title="Delete"
@@ -156,48 +184,52 @@ function EnhancedTableToolbar(props) {
     </Toolbar>
   );
 }
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
+type EnhancedTablePropType = {
+  name: string;
+  resourceURL: string;
+  searchParams: any;
+  headCells: any;
 };
-
 export default function EnhancedTable({
   name,
   resourceURL,
   searchParams,
   headCells,
-}) {
+}: EnhancedTablePropType) {
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = React.useState(false);
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("id");
-  const [selected, setSelected] = React.useState([]);
+  const [order, setOrder] = React.useState<Order>("asc");
+  const [orderBy, setOrderBy] = React.useState<string>("id");
+  const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [visibleRows, setVisibleRows] = React.useState([]);
   const [totalRowsInDb, setTotalRowsInDb] = React.useState(0);
+  const [visibleRows, setVisibleRows] = React.useState([]);
   // Avoid a layout jump when reaching the last page with empty rows.
   const [emptyRows, setEmptyRows] = React.useState(0);
-  const handleRequestSort = (event, property) => {
+
+  const handleRequestSort = (
+    event: React.MouseEvent<unknown>,
+    property: string
+  ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
+  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = visibleRows.map((n) => n.id);
+      const newSelected = visibleRows.map((row:any) => row.id);
       setSelected(newSelected);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, id) => {
+  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
     const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
+    let newSelected: readonly number[] = [];
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
@@ -214,20 +246,22 @@ export default function EnhancedTable({
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
+  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDense(event.target.checked);
   };
 
-  const isSelected = (id) => selected.indexOf(id) !== -1;
+  const isSelected = (id: number) => selected.indexOf(id) !== -1;
 
   async function getData() {
     const params = {
@@ -294,7 +328,7 @@ export default function EnhancedTable({
               headCells={headCells}
             />
             <TableBody>
-              {visibleRows.map((row, index) => {
+              {visibleRows.map((row:any, index) => {
                 const isItemSelected = isSelected(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -318,7 +352,7 @@ export default function EnhancedTable({
                         }}
                       />
                     </TableCell>
-                    {headCells.map((entry, index) => {
+                    {headCells.map((column: HeadCell, index: number) => {
                       if (index == 0) {
                         return (
                           <TableCell
@@ -328,16 +362,18 @@ export default function EnhancedTable({
                             padding="none"
                             key={row.id + index}
                           >
-                            {row[entry.id]}
+                            {row[column.id]}
                           </TableCell>
                         );
                       }
-                      if (entry.id == "created_at") {
-                        row[entry.id] = new Date(row[entry.id]).toDateString();
+                      if (column.id == "created_at") {
+                        row[column.id] = new Date(
+                          row[column.id]
+                        ).toDateString();
                       }
                       return (
                         <TableCell align="right" key={row.id + index}>
-                          {row[entry.id]}
+                          {row[column.id]}
                         </TableCell>
                       );
                     })}
@@ -356,19 +392,15 @@ export default function EnhancedTable({
             </TableBody>
           </Table>
         </TableContainer>
-        {isLoaded ? (
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={totalRowsInDb}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        ) : (
-          ""
-        )}
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={totalRowsInDb}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </Paper>
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}

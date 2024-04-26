@@ -5,7 +5,7 @@ export const NotFound = () => {
   return (
     <>
     <div>NotFound</div>
-    <Link>Home page</Link>
+    <Link to={'/'}>Home page</Link>
     </>
   )
 }
