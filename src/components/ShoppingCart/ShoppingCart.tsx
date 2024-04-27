@@ -8,11 +8,11 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Product } from "./Product";
-import getAxios from "../../Axios";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import {getCartItemsCountType} from'../../layouts/Layout'
+import AxiosContext from "../../AxiosProvider";
 type Product = {
   id:number,
   name:string,
@@ -25,8 +25,9 @@ export const ShoppingCart = () => {
   const navigate = useNavigate()
   const [products, setProducts] = useState<Product[]>([]);
   const getCartItemsCount :getCartItemsCountType = useOutletContext()
+  const axios = useContext(AxiosContext)
   async function getData() {
-    const axios = await getAxios();
+    
     const fetchResult = await axios.get(
       "/cart/products"
     );

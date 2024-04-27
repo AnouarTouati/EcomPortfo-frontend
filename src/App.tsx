@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { createContext, useEffect } from "react";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { NotFound } from "./components/NotFound.js";
@@ -13,9 +13,10 @@ import { Products } from "./components/AdminDashboard/Products.js";
 import { Settings } from "./components/AdminDashboard/Settings.js";
 import { Orders } from "./components/AdminDashboard/Orders.js";
 import { Dashboard } from "./components/AdminDashboard/Dashboard.js";
+
 const router = createBrowserRouter([
   {
-    path:"/",
+    path: "/",
     element: <Layout />,
     errorElement: <NotFound />,
     children: [
@@ -33,41 +34,41 @@ const router = createBrowserRouter([
         element: <Checkout />,
       },
       {
-        path:"payment/success",
-        element: <PaymentSuccess />
-      },{
-        path:"payment/failed",
-        element:<PaymentFailed />
-      }
+        path: "payment/success",
+        element: <PaymentSuccess />,
+      },
+      {
+        path: "payment/failed",
+        element: <PaymentFailed />,
+      },
     ],
   },
   {
-    path:"/admin",
+    path: "/admin",
     element: <AdminDashboardLayout />,
     children: [
       {
-        path:"",
-        element: <Dashboard />
+        path: "",
+        element: <Dashboard />,
       },
       {
-        path:"products",
-        element: <Products />
+        path: "products",
+        element: <Products />,
       },
       {
-        path:"orders",
-        element: <Orders />
+        path: "orders",
+        element: <Orders />,
       },
       {
-        path:"settings",
-        element: <Settings />
-      }
-    ]
-  }
+        path: "settings",
+        element: <Settings />,
+      },
+    ],
+  },
 ]);
 
 const App = () => {
-  
-   return (
+  return (
     <>
       <RouterProvider router={router} />
     </>

@@ -20,9 +20,8 @@ import Switch from "@mui/material/Switch";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
-import getAxios from "../../Axios";
 import { useNavigate } from "react-router-dom";
-
+import AxiosContext from "../../AxiosProvider";
 type Order = "asc" | "desc";
 
 interface HeadCell {
@@ -34,10 +33,7 @@ interface HeadCell {
 
 interface EnhancedTableProps {
   numSelected: number;
-  onRequestSort: (
-    event: React.MouseEvent<unknown>,
-    property: string
-  ) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
@@ -74,7 +70,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             }}
           />
         </TableCell>
-        {headCells.map((headCell:HeadCell) => (
+        {headCells.map((headCell: HeadCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
@@ -118,16 +114,16 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     numSelected,
     name,
   } = props;
+  const axios = React.useContext(AxiosContext);
   const deleteSelected = async () => {
-    const axios = await getAxios();
-    let failed = false;
-    //for loop and not forEach to use await and let all deletes happen before calling reloadCallback
-    for (let i = 0; i < selected.length; i++) {
-      const result = await axios.delete(`${resourceURL}/${selected[i]}`);
-      if (result.status != 200) failed = true;
-    }
-    setSelected([]);
-    reloadCallback();
+      let failed = false;
+      //for loop and not forEach to use await and let all deletes happen before calling reloadCallback
+      for (let i = 0; i < selected.length; i++) {
+        const result = await axios.delete(`${resourceURL}/${selected[i]}`);
+        if (result.status != 200) failed = true;
+      }
+      setSelected([]);
+      reloadCallback();
   };
 
   return (
@@ -209,6 +205,8 @@ export default function EnhancedTable({
   // Avoid a layout jump when reaching the last page with empty rows.
   const [emptyRows, setEmptyRows] = React.useState(0);
 
+  const axios = React.useContext(AxiosContext);
+
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: string
@@ -220,7 +218,7 @@ export default function EnhancedTable({
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = visibleRows.map((row:any) => row.id);
+      const newSelected = visibleRows.map((row: any) => row.id);
       setSelected(newSelected);
       return;
     }
@@ -270,8 +268,6 @@ export default function EnhancedTable({
       order: order,
       orderBy: orderBy,
     };
-
-    const axios = await getAxios();
     const result = await axios.get(resourceURL, {
       params: params,
     });
@@ -328,7 +324,7 @@ export default function EnhancedTable({
               headCells={headCells}
             />
             <TableBody>
-              {visibleRows.map((row:any, index) => {
+              {visibleRows.map((row: any, index) => {
                 const isItemSelected = isSelected(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 

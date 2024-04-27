@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import AppBar from '../components/AppBar'
-import getAxios from '../Axios'
+import AxiosContext from '../AxiosProvider'
 
 export type getCartItemsCountType = ()=>{}
 
 export const Layout = () => {
   const [cartItemsCount,setCartItemsCount] = useState(0)
-
+  const axios = useContext(AxiosContext)
   async function getCartItemsCount(){
-    const axios = await getAxios() 
+  ;
     const result = await axios.get("/cart/products/count")
     setCartItemsCount(result.data.count)
   }
