@@ -1,20 +1,42 @@
 import { Outlet } from "react-router-dom";
-import { default as Sidebar } from "../components/AdminDashboard/Sidebar";
-import { MenuLink } from "../components/AdminDashboard/Sidebar";
+import { MenuLink, default as Sidebar } from "../components/AdminDashboard/Sidebar/Sidebar";
+import { MenuLinkGroup } from "../components/AdminDashboard/Sidebar/Sidebar";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import { Home, Inventory, LocalShipping, Settings } from "@mui/icons-material";
 
 export const AdminDashboardLayout = () => {
-  const menuLinks: MenuLink[] = [
-    { path: "", name: "Dashboard", icon: <InboxIcon /> },
-    { path: "products", name: "Products", icon: <InboxIcon />},
-    { path: "orders", name: "Orders", icon: <InboxIcon />},
-    { path: "settings", name: "Settings", icon: <InboxIcon/> },
+  const DashboardLinks : MenuLink[] = [{ path: "", name: "Show Dashboard",}]
+  const ProductLinks : MenuLink[] = [ { path: "products", name: "List Products"}]
+  const OrderLinks : MenuLink[] = [ { path: "orders", name: "List Orders"}]
+  const SettingsLinks : MenuLink[] = [{ path: "settings", name: "Open Settings"}]
+
+  const menuLinkGroups: MenuLinkGroup[] = [
+    {
+      menuLinks : DashboardLinks,
+      groupLabel:'Dashboard',
+      icon:<Home />
+    },
+    {
+      menuLinks : ProductLinks,
+      groupLabel:'Products',
+      icon:<Inventory />
+    },
+    {
+      menuLinks : OrderLinks,
+      groupLabel:'Orders',
+      icon:<LocalShipping />
+    },
+    {
+      menuLinks : SettingsLinks,
+      groupLabel:'Settings',
+      icon:<Settings />
+    },
   ];
 
   return (
     <div>
-      <Sidebar menuLinks={menuLinks} Outlet={Outlet} />
+      <Sidebar menuLinkGroups={menuLinkGroups} Outlet={Outlet} />
     </div>
   );
 };

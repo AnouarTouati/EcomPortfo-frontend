@@ -17,6 +17,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Link, OutletProps, useLocation } from "react-router-dom";
+import { Collapse } from "@mui/material";
+import NestedList from "./NestedList";
 
 const drawerWidth = 240;
 
@@ -71,20 +73,24 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 export interface MenuLink {
   path: string;
   name: string;
-  icon: React.JSX.Element;
+  icon?: React.JSX.Element;
+}
+export interface MenuLinkGroup {
+  menuLinks: MenuLink[];
+  groupLabel: string;
+  icon: JSX.Element;
 }
 
 export default function Sidebar({
-  menuLinks,
+  menuLinkGroups,
   Outlet,
 }: {
-  menuLinks: MenuLink[];
+  menuLinkGroups: MenuLinkGroup[];
   Outlet: (props: OutletProps) => React.ReactElement | null;
 }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const { hash, pathname, search } = useLocation();
-  
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -136,48 +142,14 @@ export default function Sidebar({
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
-          {menuLinks.map((menuLink: MenuLink, index: number) => {
-            return (
-              <div key={menuLink.name}>
-                {index == 3 ? <Divider /> : ""}
-                <ListItem
-                  component={Link}
-                  to={menuLink.path}
-                  disablePadding
-                  sx={{ display: "block" }}
-                >
-                  <ListItemButton
-                    selected={
-                      pathname.replace("/admin", "") == "/" + menuLink.path ||
-                      (pathname.replace("/admin", "") == "" &&
-                        menuLink.path == "")
-                    }
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {menuLink.icon}
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={menuLink.name}
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              </div>
-            );
-          })}
-        </List>
+        {menuLinkGroups.map((menuLinkGroup: MenuLinkGroup) => {
+          return (
+            <NestedList
+              menuLinkGroup={menuLinkGroup}
+              key={menuLinkGroup.groupLabel}
+            />
+          );
+        })}
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
