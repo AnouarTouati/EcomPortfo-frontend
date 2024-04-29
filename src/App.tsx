@@ -9,10 +9,11 @@ import { Layout } from "./layouts/Layout.js";
 import { PaymentSuccess } from "./pages/PaymentSuccess.js";
 import { PaymentFailed } from "./pages/PaymentFailed.js";
 import { AdminDashboardLayout } from "./layouts/AdminDashboardLayout.tsx";
-import { Products } from "./components/AdminDashboard/Products.js";
+import { Products } from "./components/AdminDashboard/Products/Products.js";
 import { Settings } from "./components/AdminDashboard/Settings.js";
 import { Orders } from "./components/AdminDashboard/Orders.js";
 import { Dashboard } from "./components/AdminDashboard/Dashboard.js";
+import { ProductCreate } from "./components/AdminDashboard/Products/ProductCreate.tsx";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "products",
         element: <Products />,
+      },
+      {
+        path: "products/create",
+        element: <ProductCreate />,
       },
       {
         path: "orders",

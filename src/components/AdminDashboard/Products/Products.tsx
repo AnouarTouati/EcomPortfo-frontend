@@ -1,6 +1,6 @@
 import React from "react";
 // import Table from "./Table";
-import EnhancedTable from "./EnhancedTable";
+import EnhancedTable from "../EnhancedTable";
 import { useSearchParams } from "react-router-dom";
 
 

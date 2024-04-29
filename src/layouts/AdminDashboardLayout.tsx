@@ -7,7 +7,7 @@ import { Home, Inventory, LocalShipping, Settings } from "@mui/icons-material";
 
 export const AdminDashboardLayout = () => {
   const DashboardLinks : MenuLink[] = [{ path: "", name: "Show Dashboard",}]
-  const ProductLinks : MenuLink[] = [ { path: "products", name: "List Products"}]
+  const ProductLinks : MenuLink[] = [ { path: "products", name: "List Products"},{ path: "products/create", name: "Create Products"}]
   const OrderLinks : MenuLink[] = [ { path: "orders", name: "List Orders"}]
   const SettingsLinks : MenuLink[] = [{ path: "settings", name: "Open Settings"}]
 
