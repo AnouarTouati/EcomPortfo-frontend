@@ -4,24 +4,28 @@ import {
   Button,
   CircularProgress,
   Container,
+  Grid,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import AxiosContext from "../../../AxiosProvider";
 import { green } from "@mui/material/colors";
+import { AxiosError } from "axios";
 
 function FormPropsTextFields({
   setStripeId,
   setName,
   setDescription,
   setPrice,
+  errors,
 }: {
   setStripeId: React.Dispatch<React.SetStateAction<string | undefined>>;
   setName: React.Dispatch<React.SetStateAction<string | undefined>>;
   setDescription: React.Dispatch<React.SetStateAction<string | undefined>>;
   setPrice: React.Dispatch<React.SetStateAction<number | undefined>>;
+  errors: any;
 }) {
   return (
     <Box
@@ -41,31 +45,38 @@ function FormPropsTextFields({
             defaultValue=""
             placeholder="Stripe Product Id"
             focused={true}
-            helperText="This form does not verify the existence of this Id on Stripe"
-            onChange={(e) => setStripeId(e.target.value)}
+            error={errors.stripeId != null}
+            helperText={errors.stripeId != null ? errors.stripeId[0] : ""}
+            onChange={(e) => {
+              setStripeId(e.target.value);
+            }}
           />
         </Stack>
 
         <TextField
           required
-          id="outlined-required"
+          id="name"
           label="Required"
           defaultValue=""
           placeholder="Product Name"
           focused={true}
+          error={errors.name != null}
+          helperText={errors.name != null ? errors.name[0] : ""}
           onChange={(e) => setName(e.target.value)}
         />
         <TextField
           required
-          id="outlined-required"
+          id="description"
           label="Required"
           defaultValue=""
           placeholder="Description"
           focused={true}
+          error={errors.description != null}
+          helperText={errors.description != null ? errors.description[0] : ""}
           onChange={(e) => setDescription(e.target.value)}
         />
         <TextField
-          id="outlined-number"
+          id="price"
           label="Required"
           type="number"
           InputLabelProps={{
@@ -73,18 +84,25 @@ function FormPropsTextFields({
           }}
           placeholder="Price"
           focused={true}
+          error={errors.price != null}
+          helperText={errors.price != null ? errors.price[0] : ""}
           onChange={(e) => setPrice(e.target.value)}
         />
       </Stack>
     </Box>
   );
 }
+
 export const ProductCreate = () => {
   const [stripeId, setStripeId] = useState<string>();
   const [name, setName] = useState<string>();
   const [description, setDescription] = useState<string>();
   const [price, setPrice] = useState<number>();
-  const [status, setStatus] = useState<"ok" | "loading" | "error">("ok");
+  const [status, setStatus] = useState<
+    "default" | "success" | "loading" | "validationError" | "error"
+  >("default");
+  const [errors, setErrors] = useState({});
+
   const axios = useContext(AxiosContext);
   const submit = async () => {
     setStatus("loading");
@@ -96,50 +114,92 @@ export const ProductCreate = () => {
         price: price,
       })
       .then((value) => {
-        console.log(value);
-        setStatus("ok");
+        setStatus("success");
       })
-      .catch((error: any) => {
-        console.log(error);
-        setStatus("error");
+      .catch((error: AxiosError) => {
+        if (error.response.status == "422") {
+          setStatus("validationError");
+          setErrors(error.response.data.errors);
+        } else {
+          setStatus("error");
+        }
       });
   };
-  return (
-    <div>
-      <Stack spacing={2} direction={"column"} alignItems={"center"}>
-        {status == "ok" || status == "loading" ? (
-          <>
-            <Typography variant="h4" align="center">
-              Create a new product
-            </Typography>
-            <FormPropsTextFields
-              setStripeId={setStripeId}
-              setName={setName}
-              setDescription={setDescription}
-              setPrice={setPrice}
-            />
-
-            <Button disabled={status == "loading"} variant="contained" onClick={submit}>
-              Submit
-              {status == "loading" && (
-                <CircularProgress
-                  size={24}
-                  sx={{
-                    color: green[500],
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    marginTop: "-12px",
-                    marginLeft: "-12px",
-                  }}
-                />
-              )}
-            </Button>
-          </>
-        ) : (
-          <div>Something went wrong</div>
-        )}
+  function reset() {
+    setErrors({});
+    setStripeId("");
+    setName("");
+    setDescription("");
+    setPrice(undefined);
+    setStatus("default");
+  }
+  function PanicView() {
+    return (
+      <Stack spacing={6}>
+        <Typography variant="h4">Something went wrong</Typography>
+        <Button variant="contained" onClick={reset}>
+          Retry
+        </Button>
       </Stack>
-    </div>
+    );
+  }
+  function SuccessView() {
+    return (
+      <Stack spacing={6}>
+        <Typography variant="h4">Success</Typography>
+        <Button variant="contained" onClick={reset}>
+          Create more
+        </Button>
+      </Stack>
+    );
+  }
+
+  return (
+    <Stack
+      sx={{ pt: 6 }}
+      spacing={2}
+      direction={"column"}
+      alignItems={"center"}
+    >
+      {status == "success" ? (
+        <SuccessView />
+      ) : status == "error" ? (
+        <PanicView />
+      ) : (
+        <>
+          <Typography variant="h4" align="center">
+            Create a new product
+          </Typography>
+          <FormPropsTextFields
+            setStripeId={setStripeId}
+            setName={setName}
+            setDescription={setDescription}
+            setPrice={setPrice}
+            errors={errors}
+          />
+
+          <Button
+            disabled={status == "loading"}
+            variant="contained"
+            onClick={submit}
+          >
+            Submit
+            {status == "loading" && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  color: green[500],
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  marginTop: "-12px",
+                  marginLeft: "-12px",
+                }}
+              />
+            )}
+          </Button>
+        </>
+      )}
+    </Stack>
   );
 };
