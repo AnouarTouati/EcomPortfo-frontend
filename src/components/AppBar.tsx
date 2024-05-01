@@ -162,7 +162,7 @@ export default function PrimarySearchAppBar({cartItemsCount}:{cartItemsCount : n
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             size="large"
             edge="start"
             color="inherit"
@@ -170,7 +170,7 @@ export default function PrimarySearchAppBar({cartItemsCount}:{cartItemsCount : n
             sx={{ mr: 2 }}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
           <Typography onClick={()=>{navigate('/')}}
             variant="h6"
             noWrap
@@ -195,7 +195,7 @@ export default function PrimarySearchAppBar({cartItemsCount}:{cartItemsCount : n
                 <ShoppingCart />
               </Badge>
             </IconButton>
-            <IconButton
+            {/* <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
@@ -203,7 +203,7 @@ export default function PrimarySearchAppBar({cartItemsCount}:{cartItemsCount : n
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
             <IconButton
               size="large"
               edge="end"
