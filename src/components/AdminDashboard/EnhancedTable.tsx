@@ -24,13 +24,6 @@ import { useNavigate } from "react-router-dom";
 import AxiosContext from "../../AxiosProvider";
 type Order = "asc" | "desc";
 
-interface HeadCell {
-  disablePadding: boolean;
-  id: string;
-  label: string;
-  numeric: boolean;
-}
-
 interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
@@ -38,7 +31,7 @@ interface EnhancedTableProps {
   order: Order;
   orderBy: string;
   rowCount: number;
-  headCells: HeadCell[];
+  headCells: HeadCellType[];
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
@@ -70,7 +63,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             }}
           />
         </TableCell>
-        {headCells.map((headCell: HeadCell) => (
+        {headCells.map((headCell: HeadCellType) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
@@ -116,14 +109,14 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   } = props;
   const axios = React.useContext(AxiosContext);
   const deleteSelected = async () => {
-      let failed = false;
-      //for loop and not forEach to use await and let all deletes happen before calling reloadCallback
-      for (let i = 0; i < selected.length; i++) {
-        const result = await axios.delete(`${resourceURL}/${selected[i]}`);
-        if (result.status != 200) failed = true;
-      }
-      setSelected([]);
-      reloadCallback();
+    let failed = false;
+    //for loop and not forEach to use await and let all deletes happen before calling reloadCallback
+    for (let i = 0; i < selected.length; i++) {
+      const result = await axios.delete(`${resourceURL}/${selected[i]}`);
+      if (result.status != 200) failed = true;
+    }
+    setSelected([]);
+    reloadCallback();
   };
 
   return (
@@ -180,11 +173,18 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     </Toolbar>
   );
 }
+type HeadCellType = {
+  id: string;
+  numeric: boolean;
+  disablePadding: boolean;
+  label: string;
+  displayMap?: Map<any, any>;
+};
 type EnhancedTablePropType = {
   name: string;
   resourceURL: string;
   searchParams: any;
-  headCells: any;
+  headCells: HeadCellType[];
 };
 export default function EnhancedTable({
   name,
@@ -348,7 +348,7 @@ export default function EnhancedTable({
                         }}
                       />
                     </TableCell>
-                    {headCells.map((column: HeadCell, index: number) => {
+                    {headCells.map((column: HeadCellType, index: number) => {
                       if (index == 0) {
                         return (
                           <TableCell
@@ -357,8 +357,11 @@ export default function EnhancedTable({
                             scope="row"
                             padding="none"
                             key={row.id + index}
+                            align="left"
                           >
-                            {row[column.id]}
+                            {column.displayMap
+                              ? column.displayMap.get(row[column.id])
+                              : row[column.id]}
                           </TableCell>
                         );
                       }
@@ -368,8 +371,10 @@ export default function EnhancedTable({
                         ).toDateString();
                       }
                       return (
-                        <TableCell align="right" key={row.id + index}>
-                          {row[column.id]}
+                        <TableCell align="left" key={row.id + index}>
+                          {column.displayMap
+                            ? column.displayMap.get(row[column.id])
+                            : row[column.id]}
                         </TableCell>
                       );
                     })}
