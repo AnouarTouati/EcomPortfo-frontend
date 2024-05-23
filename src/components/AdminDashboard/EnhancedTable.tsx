@@ -32,6 +32,7 @@ interface EnhancedTableProps {
   orderBy: string;
   rowCount: number;
   headCells: HeadCellType[];
+  clickBehavior : ClickBehaviorType;
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
@@ -43,6 +44,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     rowCount,
     onRequestSort,
     headCells,
+    clickBehavior,
   } = props;
   const createSortHandler =
     (property: string) => (event: React.MouseEvent<unknown>) => {
@@ -52,17 +54,20 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all desserts",
-            }}
-          />
-        </TableCell>
+       {
+        clickBehavior == "select" ?    <TableCell padding="checkbox">
+        <Checkbox
+          color="primary"
+          indeterminate={numSelected > 0 && numSelected < rowCount}
+          checked={rowCount > 0 && numSelected === rowCount}
+          onChange={onSelectAllClick}
+          inputProps={{
+            "aria-label": "select all desserts",
+          }}
+        />
+      </TableCell> : ''
+       } 
+     
         {headCells.map((headCell: HeadCellType) => (
           <TableCell
             key={headCell.id}
@@ -180,17 +185,20 @@ type HeadCellType = {
   label: string;
   displayMap?: Map<any, any>;
 };
+type ClickBehaviorType = "select" | "openLink";
 type EnhancedTablePropType = {
   name: string;
   resourceURL: string;
   searchParams: any;
   headCells: HeadCellType[];
+  clickBehavior: ClickBehaviorType;
 };
 export default function EnhancedTable({
   name,
   resourceURL,
   searchParams,
   headCells,
+  clickBehavior,
 }: EnhancedTablePropType) {
   const navigate = useNavigate();
   const [isLoaded, setIsLoaded] = React.useState(false);
@@ -315,6 +323,7 @@ export default function EnhancedTable({
             size={dense ? "small" : "medium"}
           >
             <EnhancedTableHead
+            clickBehavior={clickBehavior}
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -339,15 +348,20 @@ export default function EnhancedTable({
                     selected={isItemSelected}
                     sx={{ cursor: "pointer" }}
                   >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          "aria-labelledby": labelId,
-                        }}
-                      />
-                    </TableCell>
+                    {clickBehavior == "select" ? (
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          color="primary"
+                          checked={isItemSelected}
+                          inputProps={{
+                            "aria-labelledby": labelId,
+                          }}
+                        />
+                      </TableCell>
+                    ) : (
+                      ""
+                    )}
+
                     {headCells.map((column: HeadCellType, index: number) => {
                       if (index == 0) {
                         return (

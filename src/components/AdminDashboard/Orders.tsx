@@ -11,6 +11,7 @@ export const Orders = () => {
     <>
       <EnhancedTable
         name="Orders"
+        clickBehavior="openLink"
         resourceURL="admin/orders"
         searchParams={searchParams}
         headCells={[

@@ -9,6 +9,7 @@ export const Products = () => {
   return (
     <EnhancedTable
       name={"Product"}
+      clickBehavior="select"
       resourceURL={"/admin/products"}
       searchParams={searchParams}
       headCells={[
