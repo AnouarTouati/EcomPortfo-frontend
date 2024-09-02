@@ -1,10 +1,9 @@
 import React, { useContext, useEffect } from "react";
-import AxiosContext from "../../AxiosProvider";
-import EnhancedTable from "./EnhancedTable";
+import AxiosContext from "../../../AxiosProvider";
+import EnhancedTable from "../EnhancedTable";
 import { useSearchParams } from "react-router-dom";
 
 export const Orders = () => {
-  const axios = useContext(AxiosContext);
   const [searchParams, setSearchParams] = useSearchParams();
 
   return (

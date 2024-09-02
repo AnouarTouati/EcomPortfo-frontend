@@ -11,9 +11,10 @@ import { PaymentFailed } from "./pages/PaymentFailed.js";
 import { AdminDashboardLayout } from "./layouts/AdminDashboardLayout.tsx";
 import { Products } from "./components/AdminDashboard/Products/Products.js";
 import { Settings } from "./components/AdminDashboard/Settings.js";
-import { Orders } from "./components/AdminDashboard/Orders.js";
+import { Orders } from "./components/AdminDashboard/Orders/Orders.js";
 import { Dashboard } from "./components/AdminDashboard/Dashboard.js";
 import { ProductCreate } from "./components/AdminDashboard/Products/ProductCreate.tsx";
+import { Order } from "./components/AdminDashboard/Orders/Order.tsx";
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: "orders",
         element: <Orders />,
+      },
+      {
+        path:"orders/:id",
+        element : <Order />
       },
       {
         path: "settings",

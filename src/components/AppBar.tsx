@@ -177,7 +177,7 @@ export default function PrimarySearchAppBar({cartItemsCount}:{cartItemsCount : n
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            MUI
+            XYZ
           </Typography>
           <Search>
             <SearchIconWrapper>

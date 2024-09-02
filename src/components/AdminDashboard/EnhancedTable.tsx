@@ -32,7 +32,7 @@ interface EnhancedTableProps {
   orderBy: string;
   rowCount: number;
   headCells: HeadCellType[];
-  clickBehavior : ClickBehaviorType;
+  clickBehavior: ClickBehaviorType;
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
@@ -54,20 +54,22 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-       {
-        clickBehavior == "select" ?    <TableCell padding="checkbox">
-        <Checkbox
-          color="primary"
-          indeterminate={numSelected > 0 && numSelected < rowCount}
-          checked={rowCount > 0 && numSelected === rowCount}
-          onChange={onSelectAllClick}
-          inputProps={{
-            "aria-label": "select all desserts",
-          }}
-        />
-      </TableCell> : ''
-       } 
-     
+        {clickBehavior == "select" ? (
+          <TableCell padding="checkbox">
+            <Checkbox
+              color="primary"
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={rowCount > 0 && numSelected === rowCount}
+              onChange={onSelectAllClick}
+              inputProps={{
+                "aria-label": "select all desserts",
+              }}
+            />
+          </TableCell>
+        ) : (
+          ""
+        )}
+
         {headCells.map((headCell: HeadCellType) => (
           <TableCell
             key={headCell.id}
@@ -234,22 +236,26 @@ export default function EnhancedTable({
   };
 
   const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly number[] = [];
+    if (clickBehavior == "select") {
+      const selectedIndex = selected.indexOf(id);
+      let newSelected: readonly number[] = [];
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
+      if (selectedIndex === -1) {
+        newSelected = newSelected.concat(selected, id);
+      } else if (selectedIndex === 0) {
+        newSelected = newSelected.concat(selected.slice(1));
+      } else if (selectedIndex === selected.length - 1) {
+        newSelected = newSelected.concat(selected.slice(0, -1));
+      } else if (selectedIndex > 0) {
+        newSelected = newSelected.concat(
+          selected.slice(0, selectedIndex),
+          selected.slice(selectedIndex + 1)
+        );
+      }
+      setSelected(newSelected);
+    } else if (clickBehavior == "openLink") {
+      navigate(`/${resourceURL}/${id}`);
     }
-    setSelected(newSelected);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -323,7 +329,7 @@ export default function EnhancedTable({
             size={dense ? "small" : "medium"}
           >
             <EnhancedTableHead
-            clickBehavior={clickBehavior}
+              clickBehavior={clickBehavior}
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
