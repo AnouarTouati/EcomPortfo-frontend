@@ -15,7 +15,8 @@ import { Orders } from "./components/AdminDashboard/Orders/Orders.js";
 import { Dashboard } from "./components/AdminDashboard/Dashboard.js";
 import { ProductCreate } from "./components/AdminDashboard/Products/ProductCreate.tsx";
 import { Order } from "./components/AdminDashboard/Orders/Order.tsx";
-
+import SignUp from "./components/SignUp/SignUp.tsx";
+import SignIn from "./components/SignIn/SignIn.tsx"
 const router = createBrowserRouter([
   {
     path: "/",
@@ -25,6 +26,17 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+        errorElement: <NotFound />,
+      },
+       
+      {
+        path: "/sign-in",
+        element: <SignIn />,
+        errorElement: <NotFound />,
+      },
+      {
+        path: "/sign-up",
+        element: <SignUp />,
         errorElement: <NotFound />,
       },
       {
