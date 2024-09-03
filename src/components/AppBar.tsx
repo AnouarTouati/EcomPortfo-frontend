@@ -1,3 +1,8 @@
+/**
+ * Component based on the AppBar from MUI
+ */
+
+
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -101,8 +106,8 @@ export default function PrimarySearchAppBar({cartItemsCount}:{cartItemsCount : n
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
     </Menu>
   );
 

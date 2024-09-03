@@ -1,3 +1,6 @@
+/**
+ * Component based on NestedList from MUI
+ */
 import * as React from "react";
 import ListSubheader from "@mui/material/ListSubheader";
 import List from "@mui/material/List";
