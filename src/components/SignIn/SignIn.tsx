@@ -109,12 +109,13 @@ export default function SignIn() {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
-
+    
     await axios.get("http://localhost:80/sanctum/csrf-cookie");
     try {
       const result = await axios.post("/login", {
         email: data.get("email"),
         password: data.get("password"),
+        remember_me: data.get('remember_me')
       });
 
       if (result.statusText == "OK") {
@@ -128,7 +129,6 @@ export default function SignIn() {
         setPasswordError(true);
         setPasswordErrorMessage("invalid password and/or email");
       } else if (error.response.status == 422) {
-        console.log(error);
         if (error.response.data.errors.email ?? false) {
           setEmailError(true);
           setEmailErrorMessage(error.response.data.errors.email[0]);
@@ -211,7 +211,7 @@ export default function SignIn() {
               />
             </FormControl>
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox name="remember_me" color="primary" />}
               label="Remember me"
             />
             <ForgotPassword open={open} handleClose={handleClose} />

@@ -2,7 +2,6 @@ import { createContext } from "react";
 import axios, { AxiosInstance } from "axios";
 
 async function setUp() {
-
   axios.defaults.withCredentials = true;
   axios.defaults.withXSRFToken = true;
 
@@ -10,10 +9,8 @@ async function setUp() {
   const axiosInstance = axios.create(axios.defaults);
 
   axiosInstance.interceptors.response.use(
-    function (response) {
-      return response;
-    },
-    function (error) {
+    (response) => response,
+    (error) =>  {
       if (
         error.response.status == 401 &&
         window.location.pathname != "/sign-in"
