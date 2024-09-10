@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Product } from "./ShoppingCart/Product";
-import { useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { getCartItemsCountType } from "../layouts/Layout";
 import AxiosContext from "../AxiosProvider";
 import { Facebook, Instagram, Twitter } from "@mui/icons-material";
@@ -128,11 +128,14 @@ function Home() {
               See More ...
             </Typography>
             <Grid container spacing={2}>
-              <Grid item>
+              {/* <Grid item>
                 <Button variant="contained">Sign Up</Button>
-              </Grid>
+              </Grid> */}
               <Grid item>
-                <Button variant="contained">Log In</Button>
+                <Button variant="contained">
+                <Link style={{color:'white'}} to={'/sign-in'}>Log In</Link>
+                </Button>
+                
               </Grid>
             </Grid>
           </Box>
