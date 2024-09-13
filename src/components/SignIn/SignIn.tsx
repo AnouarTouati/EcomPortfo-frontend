@@ -20,12 +20,12 @@ import {
   ThemeProvider,
   createTheme,
   styled,
-  PaletteMode,
 } from "@mui/material/styles";
+import { PaletteMode } from "@mui/material";
 import ForgotPassword from "./ForgotPassword";
-import getSignInTheme from "./theme/getSignInTheme";
+
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from "./CustomIcons";
-import TemplateFrame from "./TemplateFrame";
+
 import AxiosContext from "../../AxiosProvider";
 import { useNavigate } from "react-router-dom";
 
@@ -61,10 +61,10 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn() {
-  const [mode, setMode] = React.useState<PaletteMode>("light");
-  const [showCustomTheme, setShowCustomTheme] = React.useState(true);
+  const mode : PaletteMode = "light"
+ 
   const defaultTheme = createTheme({ palette: { mode } });
-  const SignInTheme = createTheme(getSignInTheme(mode));
+
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
   const [passwordError, setPasswordError] = React.useState(false);
@@ -72,30 +72,7 @@ export default function SignIn() {
   const [open, setOpen] = React.useState(false);
   const axios = React.useContext(AxiosContext);
   const navigate = useNavigate();
-  // This code only runs on the client side, to determine the system color preference
-  React.useEffect(() => {
-    // Check if there is a preferred mode in localStorage
-    const savedMode = localStorage.getItem("themeMode") as PaletteMode | null;
-    if (savedMode) {
-      setMode(savedMode);
-    } else {
-      // If no preference is found, it uses system preference
-      const systemPrefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
-      setMode(systemPrefersDark ? "dark" : "light");
-    }
-  }, []);
 
-  const toggleColorMode = () => {
-    const newMode = mode === "dark" ? "light" : "dark";
-    setMode(newMode);
-    localStorage.setItem("themeMode", newMode); // Save the selected mode to localStorage
-  };
-
-  const toggleCustomTheme = () => {
-    setShowCustomTheme((prev) => !prev);
-  };
 
   const handleClickOpen = () => {
     setOpen(true);

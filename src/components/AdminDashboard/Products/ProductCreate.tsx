@@ -86,7 +86,7 @@ function FormPropsTextFields({
           focused={true}
           error={errors.price != null}
           helperText={errors.price != null ? errors.price[0] : ""}
-          onChange={(e) => setPrice(e.target.value)}
+          onChange={(e) => setPrice(typeof e.target.value == "number" ? e.target.value : 0)}
         />
       </Stack>
     </Box>
@@ -117,9 +117,9 @@ export const ProductCreate = () => {
         setStatus("success");
       })
       .catch((error: AxiosError) => {
-        if (error.response.status == "422") {
+        if (error.response?.status == 422) {
           setStatus("validationError");
-          setErrors(error.response.data.errors);
+          setErrors((error.response?.data as any).errors);
         } else {
           setStatus("error");
         }

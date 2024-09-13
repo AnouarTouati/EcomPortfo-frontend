@@ -7,6 +7,9 @@ services:
     container_name: react-vite
     volumes:
       - ./:/app:rw
+    environment:
+      NODE_ENV : "dev"
     ports:
-      - "5173:5173"  
+      - "5173:5173"
+      - "8080:80"
   

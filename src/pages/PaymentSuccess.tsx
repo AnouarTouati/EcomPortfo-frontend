@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { redirect, useSearchParams } from "react-router-dom";
 import { Box, CircularProgress, Container, Grid } from "@mui/material";
 import AxiosContext from "../AxiosProvider";
+import { AxiosError } from "axios";
 
 export const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
@@ -27,8 +28,8 @@ export const PaymentSuccess = () => {
       } else {
         setProgress("notfound");
       }
-    } catch (err) {
-      if(err.response.status == 404){
+    } catch (error:any) {
+      if(error.response.status == 404){
         setProgress('notfound')
       }else{
 

@@ -23,13 +23,13 @@ export const Order = () => {
   const { id } = useParams();
   const [fetchState,setFetchState] = useState<FetchState>('loading');
   const [products, setProducts] = useState([1, 2, 3]);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<any>(null);
 
   async function getData() {
     try{
       const result = await axios.get(`/admin/orders/${id}`);
       console.log(result);
-      if(result.ok == false)
+      if(result.status >= 300)
         return setFetchState('failed')
       setFetchState('show')
       setData(result.data);
@@ -52,13 +52,13 @@ export const Order = () => {
               <Typography variant="h6">Order ID: {data?.id}</Typography>
               <Typography variant="h6">Client email: {data?.email} </Typography>
               <Typography variant="h6">Total: {data?.total} </Typography>
-              <Typography variant="h6">Status: {status[data?.status] as Status}</Typography>
+              <Typography variant="h6">Status: {status[data?.status]}</Typography>
             </Stack>
           </Grid>
           <Grid xs={6} item>
             <Typography variant="h3">Products</Typography>
             <Stack direction={"column"} spacing={2}>
-              {data?.products.map((product) => {
+              {data?.products.map((product:any) => {
                 return (
                   <Card variant="outlined" key={product.id}>
                     <Typography variant="h6">{product.name}  price : ${product.pivot.price_at_selling_time} X {product.pivot.quantity} = ${product.pivot.price_at_selling_time * product.pivot.quantity}</Typography>
