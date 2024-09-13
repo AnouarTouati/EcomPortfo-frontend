@@ -6,9 +6,4 @@ RUN npm install
 COPY . .
 
 EXPOSE 5173
-CMD  sh -c "npm run $(if [ "$NODE_ENV" = 'production' ] ; then echo 'build'; else echo 'dev';fi)"
-
-# FROM nginx
-# WORKDIR /usr/share/nginx/html
-# COPY ./dist /usr/share/nginx/html
-# EXPOSE 80
+CMD  sh -c "npm run dev"

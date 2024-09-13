@@ -1,0 +1,10 @@
+services:
+  frontend:
+    build:
+      context: ./
+      dockerfile: Dockerfile-prod
+    image: react-vite-prod
+    container_name: react-vite-prod
+    ports:
+      - "8080:80"
+  
