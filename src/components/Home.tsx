@@ -20,6 +20,8 @@ import { Link, useOutletContext } from "react-router-dom";
 import { getCartItemsCountType } from "../layouts/Layout";
 import AxiosContext from "../AxiosProvider";
 import { Facebook, Instagram, Twitter } from "@mui/icons-material";
+import simpleGif1 from "../assets/simple.gif"
+import simpleGif2 from "../assets/simple2.gif"
 type Product = {
   name: string;
   id: number;
@@ -86,7 +88,7 @@ function Home() {
       <Card sx={{ maxWidth: 345 }}>
         <CardMedia
           sx={{ height: 140 }}
-          image="/src/assets/simple.gif"
+          image={simpleGif1}
           title="green iguana"
         />
         <CardContent>
@@ -141,8 +143,8 @@ function Home() {
           </Box>
           <img
             style={{ height: 450 }}
-            srcSet={"/src/assets/simple2.gif"}
-            src={"/src/assets/simple.gif"}
+            srcSet={simpleGif2}
+            src={simpleGif1}
             alt={"test"}
             loading="lazy"
           />
@@ -150,8 +152,8 @@ function Home() {
         <Stack direction={"row"} alignItems={"center"} spacing={4}>
           <img
             style={{ width: 500, height: 450 }}
-            srcSet={"/src/assets/simple.gif"}
-            src={"/src/assets/simple.gif"}
+            srcSet={simpleGif1}
+            src={simpleGif1}
             alt={"test"}
             loading="lazy"
           />
