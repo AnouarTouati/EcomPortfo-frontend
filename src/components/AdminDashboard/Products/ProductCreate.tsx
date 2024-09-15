@@ -24,7 +24,7 @@ function FormPropsTextFields({
   setStripeId: React.Dispatch<React.SetStateAction<string | undefined>>;
   setName: React.Dispatch<React.SetStateAction<string | undefined>>;
   setDescription: React.Dispatch<React.SetStateAction<string | undefined>>;
-  setPrice: React.Dispatch<React.SetStateAction<number | undefined>>;
+  setPrice: React.Dispatch<React.SetStateAction<string | undefined>>;
   errors: any;
 }) {
   return (
@@ -86,7 +86,7 @@ function FormPropsTextFields({
           focused={true}
           error={errors.price != null}
           helperText={errors.price != null ? errors.price[0] : ""}
-          onChange={(e) => setPrice(typeof e.target.value == "number" ? e.target.value : 0)}
+          onChange={(e) => setPrice(e.target.value )}
         />
       </Stack>
     </Box>
@@ -97,7 +97,7 @@ export const ProductCreate = () => {
   const [stripeId, setStripeId] = useState<string>();
   const [name, setName] = useState<string>();
   const [description, setDescription] = useState<string>();
-  const [price, setPrice] = useState<number>();
+  const [price, setPrice] = useState<string>();
   const [status, setStatus] = useState<
     "default" | "success" | "loading" | "validationError" | "error"
   >("default");
