@@ -1,6 +1,5 @@
 import { Box, Button, Card, Grid, Typography } from "@mui/material";
 import React, { useContext } from "react";
-import {getCartItemsCountType} from '../../layouts/Layout'
 import AxiosContext from "../../AxiosProvider";
 type ProductProps = {
   name : string,
@@ -9,7 +8,7 @@ type ProductProps = {
   price:number,
   quantity? : number,
   showAddToCartButton? : boolean,
-  quantityChangedCallback : getCartItemsCountType
+  quantityChangedCallback : ()=> void
 }
 export const Product = ({
   name,

@@ -17,11 +17,15 @@ import {
 } from "@mui/material";
 import { Product } from "./ShoppingCart/Product";
 import { Link, useOutletContext } from "react-router-dom";
-import { getCartItemsCountType } from "../layouts/Layout";
+
 import AxiosContext from "../AxiosProvider";
 import { Facebook, Instagram, Twitter } from "@mui/icons-material";
 import simpleGif1 from "../assets/simple.gif"
 import simpleGif2 from "../assets/simple2.gif"
+import { getItemsCount } from "../store/cart/cartSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store/store";
+import { getItemsCountAsync } from "../store/cart/cartSlice";
 type Product = {
   name: string;
   id: number;
@@ -30,11 +34,14 @@ type Product = {
 };
 function Home() {
   const [products, setProducts] = useState<Product[]>([]);
-  const getCartItemsCount: getCartItemsCountType = useOutletContext();
+  const dispatch = useDispatch<AppDispatch>()
   const axios = useContext(AxiosContext);
   async function getProducts() {
     const result = await axios.get("/products");
     setProducts(result.data);
+  }
+  const dispatchGetItemsCount = ()=>{
+    dispatch(getItemsCountAsync())
   }
   useEffect(() => {
     getProducts();
@@ -250,7 +257,7 @@ function Home() {
                     price={product.price}
                     description={product.description}
                     showAddToCartButton={true}
-                    quantityChangedCallback={getCartItemsCount}
+                    quantityChangedCallback={dispatchGetItemsCount}
                   />
                 </Grid>
               );

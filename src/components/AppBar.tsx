@@ -22,6 +22,8 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -63,7 +65,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar({cartItemsCount}:{cartItemsCount : number}) {
+export default function PrimarySearchAppBar() {
+  const cartItemsCount = useSelector((state:RootState)=> state.cart.itemsCount)
     const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =

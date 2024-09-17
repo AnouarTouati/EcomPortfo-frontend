@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import axios, { AxiosInstance } from "axios";
 
-async function setUp() {
+export async function setUp() {
   axios.defaults.withCredentials = true;
   axios.defaults.withXSRFToken = true;
 
