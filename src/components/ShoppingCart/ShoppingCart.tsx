@@ -11,8 +11,10 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import { Product } from "./Product";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import {getCartItemsCountType} from'../../layouts/Layout'
 import AxiosContext from "../../AxiosProvider";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
+import { getItemsCountAsync } from "../../store/cart/cartSlice";
 type Product = {
   id:number,
   name:string,
@@ -24,15 +26,16 @@ type Product = {
 export const ShoppingCart = () => {
   const navigate = useNavigate()
   const [products, setProducts] = useState<Product[]>([]);
-  const getCartItemsCount :getCartItemsCountType = useOutletContext()
   const axios = useContext(AxiosContext)
+
+  const dispatch = useDispatch<AppDispatch>()
   async function getData() {
     
     const fetchResult = await axios.get(
       "/cart/products"
     );
     setProducts(fetchResult.data);
-    getCartItemsCount();
+    dispatch(getItemsCountAsync())
   }
   useEffect(() => {
     getData();
