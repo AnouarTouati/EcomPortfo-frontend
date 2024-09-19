@@ -39,6 +39,7 @@ export const ShoppingCart = () => {
   }
   useEffect(() => {
     getData();
+
   }, []);
   function sum() {
     let sum = 0;

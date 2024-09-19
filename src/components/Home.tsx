@@ -22,7 +22,6 @@ import AxiosContext from "../AxiosProvider";
 import { Facebook, Instagram, Twitter } from "@mui/icons-material";
 import simpleGif1 from "../assets/simple.gif"
 import simpleGif2 from "../assets/simple2.gif"
-import { getItemsCount } from "../store/cart/cartSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { getItemsCountAsync } from "../store/cart/cartSlice";
@@ -44,7 +43,8 @@ function Home() {
     dispatch(getItemsCountAsync())
   }
   useEffect(() => {
-    getProducts();
+    getProducts()
+    dispatchGetItemsCount()
   }, []);
 
   function Item({

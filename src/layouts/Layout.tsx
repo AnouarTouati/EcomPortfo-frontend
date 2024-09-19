@@ -1,15 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Outlet } from 'react-router-dom'
-import AppBar from '../components/AppBar'
-import AxiosContext from '../AxiosProvider'
+import React, { useContext, useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
+import AppBar from "../components/AppBar";
 
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store/store.ts";
+import { getUser } from "../store/user/userSlice.ts";
 
 export const Layout = () => {
-  
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, []);
   return (
     <>
-    <AppBar />
-    <Outlet />
+      <AppBar />
+      <Outlet />
     </>
-  )
-}
+  );
+};
