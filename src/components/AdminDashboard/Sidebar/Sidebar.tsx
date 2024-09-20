@@ -95,8 +95,8 @@ export default function Sidebar({
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const { hash, pathname, search } = useLocation();
-  const axios = React.useContext(AxiosContext)
-  const navigate = useNavigate()
+  const axios = React.useContext(AxiosContext);
+  const navigate = useNavigate();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -106,7 +106,7 @@ export default function Sidebar({
   };
 
   return (
-    <Box sx={{ display: "flex"}}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -120,7 +120,7 @@ export default function Sidebar({
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-          <Link to={'/'}>XYZ</Link>
+            <Link to={"/"}>XYZ</Link>
           </Typography>
         </Toolbar>
       </AppBar>
@@ -155,23 +155,27 @@ export default function Sidebar({
             />
           );
         })}
-         <Button onClick={(e)=>{
-          axios.post('/logout').then((res)=> {
-           
-            if(res.status==200){
-              navigate('/')
-            }
-            
-          }).catch((error)=>{
-            window.alert('something went wrong while logging out')
-          })
-         }}>Log out</Button>
+        <Button
+          onClick={(e) => {
+            axios
+              .post("/logout")
+              .then((res) => {
+                if (res.status == 200) {
+                  navigate("/");
+                }
+              })
+              .catch((error) => {
+                window.alert("something went wrong while logging out");
+              });
+          }}
+        >
+          Log out
+        </Button>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
         <Outlet />
       </Main>
-      
     </Box>
   );
 }

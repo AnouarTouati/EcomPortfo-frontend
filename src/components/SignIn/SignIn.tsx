@@ -16,11 +16,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
-import {
-  ThemeProvider,
-  createTheme,
-  styled,
-} from "@mui/material/styles";
+import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
 import { PaletteMode } from "@mui/material";
 import ForgotPassword from "./ForgotPassword";
 
@@ -61,8 +57,8 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn() {
-  const mode : PaletteMode = "light"
- 
+  const mode: PaletteMode = "light";
+
   const defaultTheme = createTheme({ palette: { mode } });
 
   const [emailError, setEmailError] = React.useState(false);
@@ -72,7 +68,6 @@ export default function SignIn() {
   const [open, setOpen] = React.useState(false);
   const axios = React.useContext(AxiosContext);
   const navigate = useNavigate();
-
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -86,13 +81,13 @@ export default function SignIn() {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
-    
+
     await axios.get("http://localhost:80/sanctum/csrf-cookie");
     try {
       const result = await axios.post("/login", {
         email: data.get("email"),
         password: data.get("password"),
-        remember_me: data.get('remember_me')
+        remember_me: data.get("remember_me"),
       });
 
       if (result.statusText == "OK") {

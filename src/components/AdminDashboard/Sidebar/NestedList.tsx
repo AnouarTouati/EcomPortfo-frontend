@@ -41,9 +41,7 @@ export default function NestedList({
       }
     >
       <ListItemButton onClick={handleClick}>
-        <ListItemIcon>
-          {menuLinkGroup.icon}
-        </ListItemIcon>
+        <ListItemIcon>{menuLinkGroup.icon}</ListItemIcon>
         <ListItemText primary={menuLinkGroup.groupLabel} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
@@ -61,9 +59,7 @@ export default function NestedList({
                 }
                 sx={{ pl: 4 }}
               >
-                <ListItemIcon>
-                  {menuLink.icon}
-                </ListItemIcon>
+                <ListItemIcon>{menuLink.icon}</ListItemIcon>
                 <ListItemText primary={menuLink.name} />
               </ListItemButton>
             );

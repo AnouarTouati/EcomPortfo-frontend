@@ -37,7 +37,7 @@ export const Orders = () => {
             numeric: false,
             disablePadding: true,
             label: "Status",
-            displayMap: (new Map()).set(0,"unpaid").set(1,"paid"),
+            displayMap: new Map().set(0, "unpaid").set(1, "paid"),
           },
         ]}
       />

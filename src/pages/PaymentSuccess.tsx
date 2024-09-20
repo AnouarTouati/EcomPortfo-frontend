@@ -11,28 +11,24 @@ export const PaymentSuccess = () => {
   useEffect(() => {
     const stripeSessionId = searchParams.get("session_id");
     if (!stripeSessionId) {
-      setProgress('error');
+      setProgress("error");
     } else {
       testSessionIdAgainstDb(stripeSessionId);
     }
   }, []);
-  async function testSessionIdAgainstDb(stripeSessionId : string) {
-    
+  async function testSessionIdAgainstDb(stripeSessionId: string) {
     try {
-      const result = await axios.get(
-        `/orders/${stripeSessionId}`
-      );
-      console.log(result.status)
+      const result = await axios.get(`/orders/${stripeSessionId}`);
+      console.log(result.status);
       if (result.status == 200) {
         setProgress("success");
       } else {
         setProgress("notfound");
       }
-    } catch (error:any) {
-      if(error.response.status == 404){
-        setProgress('notfound')
-      }else{
-
+    } catch (error: any) {
+      if (error.response.status == 404) {
+        setProgress("notfound");
+      } else {
         setProgress("error");
       }
     }
@@ -40,14 +36,15 @@ export const PaymentSuccess = () => {
   return (
     <div>
       {progress === "loading" ? (
-        
-        <Box   display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="100vh" sx={{ display: 'flex' }}>
-        <CircularProgress />
-      </Box>
-
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          minHeight="100vh"
+          sx={{ display: "flex" }}
+        >
+          <CircularProgress />
+        </Box>
       ) : progress === "success" ? (
         <h1>Success</h1>
       ) : progress === "notfound" ? (

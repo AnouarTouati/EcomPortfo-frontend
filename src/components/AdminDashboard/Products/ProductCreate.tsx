@@ -86,7 +86,7 @@ function FormPropsTextFields({
           focused={true}
           error={errors.price != null}
           helperText={errors.price != null ? errors.price[0] : ""}
-          onChange={(e) => setPrice(e.target.value )}
+          onChange={(e) => setPrice(e.target.value)}
         />
       </Stack>
     </Box>

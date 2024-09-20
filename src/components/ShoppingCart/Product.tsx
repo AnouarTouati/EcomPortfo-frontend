@@ -2,14 +2,14 @@ import { Box, Button, Card, Grid, Typography } from "@mui/material";
 import React, { useContext } from "react";
 import AxiosContext from "../../AxiosProvider";
 type ProductProps = {
-  name : string,
-  id : number,
-  description?: string,
-  price:number,
-  quantity? : number,
-  showAddToCartButton? : boolean,
-  quantityChangedCallback : ()=> void
-}
+  name: string;
+  id: number;
+  description?: string;
+  price: number;
+  quantity?: number;
+  showAddToCartButton?: boolean;
+  quantityChangedCallback: () => void;
+};
 export const Product = ({
   name,
   id,
@@ -18,34 +18,28 @@ export const Product = ({
   quantity,
   showAddToCartButton = false,
   quantityChangedCallback,
-}:ProductProps) => {
-  const axios = useContext(AxiosContext)
-  async function addToCart(id:number) {
-    ;
+}: ProductProps) => {
+  const axios = useContext(AxiosContext);
+  async function addToCart(id: number) {
     const result = await axios.post("/cart/products", {
       product_id: id,
     });
     quantityChangedCallback();
   }
-  async function increase(productId:number) {
-  
+  async function increase(productId: number) {
     const result = await axios.post(
       `/cart/products/${productId}/quantity/increase`
     );
     quantityChangedCallback();
   }
-  async function decrease(productId:number) {
- 
+  async function decrease(productId: number) {
     const result = await axios.post(
       `/cart/products/${productId}/quantity/decrease`
     );
     quantityChangedCallback();
   }
-  async function remove(productId:number) {
-
-    const result = await axios.delete(
-      `cart/products/${productId}`
-    );
+  async function remove(productId: number) {
+    const result = await axios.delete(`cart/products/${productId}`);
     quantityChangedCallback();
   }
   return (
@@ -100,9 +94,14 @@ export const Product = ({
                 </Button>
               </Grid>
               <Grid item xs={2}>
-                <Button variant="contained" onClick={()=>{
-                  remove(id);
-                }}>Remove</Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    remove(id);
+                  }}
+                >
+                  Remove
+                </Button>
               </Grid>
             </>
           ) : (

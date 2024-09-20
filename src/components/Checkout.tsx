@@ -5,9 +5,8 @@ import AxiosContext from "../AxiosProvider";
 export const Checkout = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(false);
-  const axios = useContext(AxiosContext)
+  const axios = useContext(AxiosContext);
   async function submit() {
-    
     try {
       const result = await axios.post("/orders", {
         email: email,

@@ -20,8 +20,8 @@ import { Link, useOutletContext } from "react-router-dom";
 
 import AxiosContext from "../AxiosProvider";
 import { Facebook, Instagram, Twitter } from "@mui/icons-material";
-import simpleGif1 from "../assets/simple.gif"
-import simpleGif2 from "../assets/simple2.gif"
+import simpleGif1 from "../assets/simple.gif";
+import simpleGif2 from "../assets/simple2.gif";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { getItemsCountAsync } from "../store/cart/cartSlice";
@@ -33,18 +33,18 @@ type Product = {
 };
 function Home() {
   const [products, setProducts] = useState<Product[]>([]);
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
   const axios = useContext(AxiosContext);
   async function getProducts() {
     const result = await axios.get("/products");
     setProducts(result.data);
   }
-  const dispatchGetItemsCount = ()=>{
-    dispatch(getItemsCountAsync())
-  }
+  const dispatchGetItemsCount = () => {
+    dispatch(getItemsCountAsync());
+  };
   useEffect(() => {
-    getProducts()
-    dispatchGetItemsCount()
+    getProducts();
+    dispatchGetItemsCount();
   }, []);
 
   function Item({
@@ -142,9 +142,10 @@ function Home() {
               </Grid> */}
               <Grid item>
                 <Button variant="contained">
-                <Link style={{color:'white'}} to={'/sign-in'}>Log In</Link>
+                  <Link style={{ color: "white" }} to={"/sign-in"}>
+                    Log In
+                  </Link>
                 </Button>
-                
               </Grid>
             </Grid>
           </Box>
@@ -270,7 +271,7 @@ function Home() {
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={4} alignItems={"center"}>
-              <Facebook/>
+              <Facebook />
             </Grid>
             <Grid item xs={4}>
               <Twitter></Twitter>

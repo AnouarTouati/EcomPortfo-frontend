@@ -16,30 +16,26 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import { getItemsCountAsync } from "../../store/cart/cartSlice";
 type Product = {
-  id:number,
-  name:string,
-  price:number,
-  pivot : {
-    quantity : number
-  }
-}
+  id: number;
+  name: string;
+  price: number;
+  pivot: {
+    quantity: number;
+  };
+};
 export const ShoppingCart = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
-  const axios = useContext(AxiosContext)
+  const axios = useContext(AxiosContext);
 
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
   async function getData() {
-    
-    const fetchResult = await axios.get(
-      "/cart/products"
-    );
+    const fetchResult = await axios.get("/cart/products");
     setProducts(fetchResult.data);
-    dispatch(getItemsCountAsync())
+    dispatch(getItemsCountAsync());
   }
   useEffect(() => {
     getData();
-
   }, []);
   function sum() {
     let sum = 0;
@@ -59,15 +55,24 @@ export const ShoppingCart = () => {
               </Typography>
               <Divider />
 
-              { products.length ?
-              products.map((item:Product, index) => {
-                return (
-                  <Product id={item.id} key={index} name={item.name} price={item.price} quantity={item.pivot.quantity} quantityChangedCallback={getData}/>
-                );
-              }):
-              <Typography padding={2} align="center" variant="h6">No items</Typography>
-              }
-        
+              {products.length ? (
+                products.map((item: Product, index) => {
+                  return (
+                    <Product
+                      id={item.id}
+                      key={index}
+                      name={item.name}
+                      price={item.price}
+                      quantity={item.pivot.quantity}
+                      quantityChangedCallback={getData}
+                    />
+                  );
+                })
+              ) : (
+                <Typography padding={2} align="center" variant="h6">
+                  No items
+                </Typography>
+              )}
             </Paper>
           </Grid>
           <Grid item xs={4}>
@@ -75,7 +80,15 @@ export const ShoppingCart = () => {
               <Box padding={2}>
                 <Typography variant="h6">Subtotal and checkout </Typography>
                 <Typography variant="body1">SubTotal : {sum()} $ </Typography>
-                <Button variant="contained" onClick={()=>{navigate('/checkout')}} disabled={!products.length}>Proceed to checkout</Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    navigate("/checkout");
+                  }}
+                  disabled={!products.length}
+                >
+                  Proceed to checkout
+                </Button>
               </Box>
             </Paper>
           </Grid>

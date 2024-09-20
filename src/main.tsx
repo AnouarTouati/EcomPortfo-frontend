@@ -13,6 +13,6 @@ import { store } from "./store/store.ts";
 
 ReactDOM.createRoot(document.getElementById("root") as any).render(
   <Provider store={store}>
-    <App /> 
+    <App />
   </Provider>
 );
