@@ -1,4 +1,4 @@
-import React, { createContext, useEffect } from "react";
+import React from "react";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { NotFound } from "./components/NotFound.js";

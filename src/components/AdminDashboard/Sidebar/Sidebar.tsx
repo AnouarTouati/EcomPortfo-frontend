@@ -8,19 +8,14 @@ import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import { Link, OutletProps, useLocation, useNavigate } from "react-router-dom";
-import { Button, Collapse } from "@mui/material";
+import { Link, OutletProps, useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 import NestedList from "./NestedList";
 import { getAxios } from "../../../Axios";
 
@@ -95,7 +90,7 @@ export default function Sidebar({
 }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const { hash, pathname, search } = useLocation();
+
   const navigate = useNavigate();
   const handleDrawerOpen = () => {
     setOpen(true);

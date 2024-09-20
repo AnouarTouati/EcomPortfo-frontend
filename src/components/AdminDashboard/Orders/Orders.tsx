@@ -4,7 +4,7 @@ import EnhancedTable from "../EnhancedTable";
 import { useSearchParams } from "react-router-dom";
 
 export const Orders = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   return (
     <>

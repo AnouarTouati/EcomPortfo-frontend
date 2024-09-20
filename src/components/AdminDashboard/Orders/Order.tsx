@@ -1,6 +1,6 @@
 import { Card, Container, Grid, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getAxios } from "../../../Axios";
 
 const axiosInstance = await getAxios();
@@ -23,7 +23,6 @@ export const Order = () => {
 
   const { id } = useParams();
   const [fetchState, setFetchState] = useState<FetchState>("loading");
-  const [products, setProducts] = useState([1, 2, 3]);
   const [data, setData] = useState<any>(null);
 
   async function getData() {

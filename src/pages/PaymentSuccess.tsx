@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
-import { redirect, useSearchParams } from "react-router-dom";
-import { Box, CircularProgress, Container, Grid } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Box, CircularProgress } from "@mui/material";
 import { getAxios } from "../Axios";
-import { AxiosError } from "axios";
+
 const axiosInstance = await getAxios();
 export const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
