@@ -22,7 +22,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { Link, OutletProps, useLocation, useNavigate } from "react-router-dom";
 import { Button, Collapse } from "@mui/material";
 import NestedList from "./NestedList";
-import AxiosContext from "../../../Axios";
+import { getAxios } from "../../../Axios";
 
 const drawerWidth = 240;
 
@@ -85,6 +85,7 @@ export interface MenuLinkGroup {
   icon: JSX.Element;
 }
 
+const axiosInstance = await getAxios();
 export default function Sidebar({
   menuLinkGroups,
   Outlet,
@@ -95,7 +96,6 @@ export default function Sidebar({
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const { hash, pathname, search } = useLocation();
-  const axios = React.useContext(AxiosContext);
   const navigate = useNavigate();
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -157,7 +157,7 @@ export default function Sidebar({
         })}
         <Button
           onClick={(e) => {
-            axios
+            axiosInstance
               .post("/logout")
               .then((res) => {
                 if (res.status == 200) {

@@ -220,8 +220,6 @@ export default function EnhancedTable({
   // Avoid a layout jump when reaching the last page with empty rows.
   const [emptyRows, setEmptyRows] = React.useState(0);
 
-  const axios = React.useContext(AxiosContext);
-
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: string

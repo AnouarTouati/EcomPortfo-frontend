@@ -9,10 +9,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import AxiosContext from "../../../Axios";
+import React, { useState } from "react";
 import { green } from "@mui/material/colors";
 import { AxiosError } from "axios";
+import { getAxios } from "../../../Axios";
 
 function FormPropsTextFields({
   setStripeId,
@@ -92,7 +92,7 @@ function FormPropsTextFields({
     </Box>
   );
 }
-
+const axiosInstance = await getAxios();
 export const ProductCreate = () => {
   const [stripeId, setStripeId] = useState<string>();
   const [name, setName] = useState<string>();
@@ -103,10 +103,9 @@ export const ProductCreate = () => {
   >("default");
   const [errors, setErrors] = useState({});
 
-  const axios = useContext(AxiosContext);
   const submit = async () => {
     setStatus("loading");
-    axios
+    axiosInstance
       .post("admin/products", {
         stripeId: stripeId,
         name: name,
