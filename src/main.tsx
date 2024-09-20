@@ -11,7 +11,9 @@ import "@fontsource/roboto/700.css";
 import { Provider } from "react-redux";
 import { store } from "./store/store.ts";
 
-ReactDOM.createRoot(document.getElementById("root") as any).render(
+ReactDOM.createRoot(
+  document.getElementById("root") as ReactDOM.Container
+).render(
   <Provider store={store}>
     <App />
   </Provider>

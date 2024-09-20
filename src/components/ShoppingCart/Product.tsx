@@ -21,25 +21,21 @@ export const Product = ({
   quantityChangedCallback,
 }: ProductProps) => {
   async function addToCart(id: number) {
-    const result = await axiosInstance.post("/cart/products", {
+    await axiosInstance.post("/cart/products", {
       product_id: id,
     });
     quantityChangedCallback();
   }
   async function increase(productId: number) {
-    const result = await axiosInstance.post(
-      `/cart/products/${productId}/quantity/increase`
-    );
+    await axiosInstance.post(`/cart/products/${productId}/quantity/increase`);
     quantityChangedCallback();
   }
   async function decrease(productId: number) {
-    const result = await axiosInstance.post(
-      `/cart/products/${productId}/quantity/decrease`
-    );
+    await axiosInstance.post(`/cart/products/${productId}/quantity/decrease`);
     quantityChangedCallback();
   }
   async function remove(productId: number) {
-    const result = await axiosInstance.delete(`cart/products/${productId}`);
+    await axiosInstance.delete(`cart/products/${productId}`);
     quantityChangedCallback();
   }
   return (

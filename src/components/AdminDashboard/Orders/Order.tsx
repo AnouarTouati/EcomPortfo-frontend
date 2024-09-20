@@ -5,33 +5,33 @@ import { getAxios } from "../../../Axios";
 
 const axiosInstance = await getAxios();
 export const Order = () => {
-  const status = ["Unpaid", "Paid"];
-  // type Product = {
-  //   id: number;
-  //   name: string;
-  //   price: string;
-  // };
-  // type OrderType = {
-  //   id: number;
-  //   products: Product[];
-  //   email: string;
-  //   status: Status;
-  //   stripe_session_id: string;
-  //   total: number;
-  // };
+  const status = ["Unpaid", "Paid", "Uknown"];
+  type ProductType = {
+    id: number;
+    name: string;
+    pivot: { price_at_selling_time: number; quantity: number };
+    price: string;
+  };
+  type OrderType = {
+    id: number;
+    email: string;
+    status: number;
+    products: ProductType[];
+    total: number;
+    stripe_session_id: string;
+  };
   type FetchState = "loading" | "show" | "failed";
 
   const { id } = useParams();
   const [fetchState, setFetchState] = useState<FetchState>("loading");
-  const [data, setData] = useState<any>(null);
+  const [order, setOrder] = useState<OrderType | null>(null);
 
   async function getData() {
     try {
       const result = await axiosInstance.get(`/admin/orders/${id}`);
-      console.log(result);
       if (result.status >= 300) return setFetchState("failed");
       setFetchState("show");
-      setData(result.data);
+      setOrder(result.data);
     } catch (error) {
       setFetchState("failed");
     }
@@ -49,20 +49,22 @@ export const Order = () => {
             <Grid xs={6} item>
               <Stack direction={"column"} spacing={2}>
                 <Typography variant="h3">Order</Typography>
-                <Typography variant="h6">Order ID: {data?.id}</Typography>
+                <Typography variant="h6">Order ID: {order?.id}</Typography>
                 <Typography variant="h6">
-                  Client email: {data?.email}{" "}
+                  Client email: {order?.email}{" "}
                 </Typography>
-                <Typography variant="h6">Total: {data?.total} </Typography>
+                <Typography variant="h6">Total: {order?.total} </Typography>
                 <Typography variant="h6">
-                  Status: {status[data?.status]}
+                  Status:{" "}
+                  {status[order?.status != undefined ? order?.status : 2]}{" "}
+                  {/* index 2 is uknown */}
                 </Typography>
               </Stack>
             </Grid>
             <Grid xs={6} item>
               <Typography variant="h3">Products</Typography>
               <Stack direction={"column"} spacing={2}>
-                {data?.products.map((product: any) => {
+                {order?.products.map((product: ProductType) => {
                   return (
                     <Card variant="outlined" key={product.id}>
                       <Typography variant="h6">
