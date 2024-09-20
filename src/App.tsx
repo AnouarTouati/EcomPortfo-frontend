@@ -8,7 +8,7 @@ import Home from "./components/Home.tsx";
 import { Layout } from "./layouts/Layout.js";
 import { PaymentSuccess } from "./pages/PaymentSuccess.js";
 import { PaymentFailed } from "./pages/PaymentFailed.js";
-import { AdminDashboardLayout } from "./layouts/AdminDashboardLayout.tsx";
+import { AdminLayout } from "./layouts/AdminLayout.tsx";
 import { Products } from "./components/AdminDashboard/Products/Products.js";
 import { Settings } from "./components/AdminDashboard/Settings.js";
 import { Orders } from "./components/AdminDashboard/Orders/Orders.js";
@@ -60,7 +60,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminDashboardLayout />,
+    element: <AdminLayout />,
     children: [
       {
         path: "",

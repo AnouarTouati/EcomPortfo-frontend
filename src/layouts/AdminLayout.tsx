@@ -6,7 +6,7 @@ import {
 import { MenuLinkGroup } from "../components/AdminDashboard/Sidebar/Sidebar";
 import { Home, Inventory, LocalShipping, Settings } from "@mui/icons-material";
 
-export const AdminDashboardLayout = () => {
+export const AdminLayout = () => {
   const DashboardLinks: MenuLink[] = [{ path: "", name: "Show Dashboard" }];
   const ProductLinks: MenuLink[] = [
     { path: "products", name: "List Products" },
