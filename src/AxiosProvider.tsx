@@ -1,16 +1,20 @@
 import { createContext } from "react";
 import axios, { AxiosInstance } from "axios";
-
+let axiosSingleton: AxiosInstance | null = null;
 export async function setUp() {
+  if (axiosSingleton) {
+    return axiosSingleton;
+  }
+
   axios.defaults.withCredentials = true;
   axios.defaults.withXSRFToken = true;
 
   axios.defaults.baseURL = "http://localhost:80/api";
-  const axiosInstance = axios.create(axios.defaults);
+  axiosSingleton = axios.create(axios.defaults);
 
-  axiosInstance.interceptors.response.use(
+  axiosSingleton.interceptors.response.use(
     (response) => response,
-    (error) =>  {
+    (error) => {
       if (
         error.response.status == 401 &&
         window.location.pathname != "/sign-in"
@@ -20,7 +24,7 @@ export async function setUp() {
       return Promise.reject(error);
     }
   );
-  return axiosInstance;
+  return axiosSingleton;
 }
 //we are using only a context without a provider
 //using provider requires useState and using setState to set an instance of axios causes it to make a random http request and crash
