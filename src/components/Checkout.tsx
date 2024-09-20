@@ -1,14 +1,14 @@
 import { Container, Typography, TextField, Button } from "@mui/material";
-import React, { useContext, useState } from "react";
-import AxiosContext from "../AxiosProvider";
-
+import React, { useState } from "react";
+import { getAxios } from "../Axios";
+const axiosInstance = await getAxios();
 export const Checkout = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(false);
-  const axios = useContext(AxiosContext);
+
   async function submit() {
     try {
-      const result = await axios.post("/orders", {
+      const result = await axiosInstance.post("/orders", {
         email: email,
       });
       window.location.href = result.data.url;

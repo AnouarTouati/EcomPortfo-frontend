@@ -8,10 +8,10 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Product } from "./Product";
-import { useNavigate, useOutletContext } from "react-router-dom";
-import AxiosContext from "../../AxiosProvider";
+import { useNavigate } from "react-router-dom";
+import { getAxios } from "../../Axios";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import { getItemsCountAsync } from "../../store/cart/cartSlice";
@@ -23,14 +23,15 @@ type Product = {
     quantity: number;
   };
 };
+const axiosInstance = await getAxios();
+
 export const ShoppingCart = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
-  const axios = useContext(AxiosContext);
 
   const dispatch = useDispatch<AppDispatch>();
   async function getData() {
-    const fetchResult = await axios.get("/cart/products");
+    const fetchResult = await axiosInstance.get("/cart/products");
     setProducts(fetchResult.data);
     dispatch(getItemsCountAsync());
   }

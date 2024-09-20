@@ -24,7 +24,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { useNavigate } from "react-router-dom";
-import AxiosContext from "../../AxiosProvider";
+import { getAxios } from "../../Axios";
 type Order = "asc" | "desc";
 
 interface EnhancedTableProps {
@@ -107,7 +107,7 @@ interface EnhancedTableToolbarProps {
   numSelected: number;
   name: string;
 }
-
+const axiosInstance = await getAxios();
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const {
     selected,
@@ -117,12 +117,14 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     numSelected,
     name,
   } = props;
-  const axios = React.useContext(AxiosContext);
+
   const deleteSelected = async () => {
     let failed = false;
     //for loop and not forEach to use await and let all deletes happen before calling reloadCallback
     for (let i = 0; i < selected.length; i++) {
-      const result = await axios.delete(`${resourceURL}/${selected[i]}`);
+      const result = await axiosInstance.delete(
+        `${resourceURL}/${selected[i]}`
+      );
       if (result.status != 200) failed = true;
     }
     setSelected([]);
@@ -285,7 +287,7 @@ export default function EnhancedTable({
       order: order,
       orderBy: orderBy,
     };
-    const result = await axios.get(resourceURL, {
+    const result = await axiosInstance.get(resourceURL, {
       params: params,
     });
 

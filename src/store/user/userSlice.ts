@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { setUp } from "../../AxiosProvider";
-import { AxiosError } from "axios";
+import { getAxios } from "../../Axios";
 
-const axiosInstance = await setUp();
+const axiosInstance = await getAxios();
 interface UserState {
   name: string;
   email: string;

@@ -1,6 +1,5 @@
 import { Box, Button, Card, Grid, Typography } from "@mui/material";
-import React, { useContext } from "react";
-import AxiosContext from "../../AxiosProvider";
+import { getAxios } from "../../Axios";
 type ProductProps = {
   name: string;
   id: number;
@@ -10,6 +9,7 @@ type ProductProps = {
   showAddToCartButton?: boolean;
   quantityChangedCallback: () => void;
 };
+const axiosInstance = await getAxios();
 export const Product = ({
   name,
   id,
@@ -19,27 +19,26 @@ export const Product = ({
   showAddToCartButton = false,
   quantityChangedCallback,
 }: ProductProps) => {
-  const axios = useContext(AxiosContext);
   async function addToCart(id: number) {
-    const result = await axios.post("/cart/products", {
+    const result = await axiosInstance.post("/cart/products", {
       product_id: id,
     });
     quantityChangedCallback();
   }
   async function increase(productId: number) {
-    const result = await axios.post(
+    const result = await axiosInstance.post(
       `/cart/products/${productId}/quantity/increase`
     );
     quantityChangedCallback();
   }
   async function decrease(productId: number) {
-    const result = await axios.post(
+    const result = await axiosInstance.post(
       `/cart/products/${productId}/quantity/decrease`
     );
     quantityChangedCallback();
   }
   async function remove(productId: number) {
-    const result = await axios.delete(`cart/products/${productId}`);
+    const result = await axiosInstance.delete(`cart/products/${productId}`);
     quantityChangedCallback();
   }
   return (

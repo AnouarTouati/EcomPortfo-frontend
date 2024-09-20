@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import {
   Box,
@@ -9,16 +9,13 @@ import {
   CardMedia,
   Container,
   Grid,
-  List,
-  ListItem,
-  Paper,
   Stack,
   Typography,
 } from "@mui/material";
 import { Product } from "./ShoppingCart/Product";
-import { Link, useOutletContext } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import AxiosContext from "../AxiosProvider";
+import { getAxios } from "../Axios";
 import { Facebook, Instagram, Twitter } from "@mui/icons-material";
 import simpleGif1 from "../assets/simple.gif";
 import simpleGif2 from "../assets/simple2.gif";
@@ -31,12 +28,13 @@ type Product = {
   price: number;
   description: string;
 };
+const axiosInstance = await getAxios();
 function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const dispatch = useDispatch<AppDispatch>();
-  const axios = useContext(AxiosContext);
+
   async function getProducts() {
-    const result = await axios.get("/products");
+    const result = await axiosInstance.get("/products");
     setProducts(result.data);
   }
   const dispatchGetItemsCount = () => {
@@ -47,43 +45,6 @@ function Home() {
     dispatchGetItemsCount();
   }, []);
 
-  function Item({
-    name,
-    description,
-    path,
-  }: {
-    name: string;
-    description: string;
-    path: string;
-  }) {
-    return (
-      <>
-        <Stack direction={"row"} justifyContent={"center"}>
-          <img
-            style={{ height: 250 }}
-            srcSet={path}
-            src={path}
-            alt={"test"}
-            loading="lazy"
-          />
-          <img
-            style={{ height: 250 }}
-            srcSet={path}
-            src={path}
-            alt={"test"}
-            loading="lazy"
-          />
-          <img
-            style={{ height: 250 }}
-            srcSet={path}
-            src={path}
-            alt={"test"}
-            loading="lazy"
-          />
-        </Stack>
-      </>
-    );
-  }
   function MediaCard({
     title,
     description,

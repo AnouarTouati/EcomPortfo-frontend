@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { setUp } from "../../AxiosProvider";
+import { getAxios } from "../../Axios";
 
 interface CartState {
   itemsCount: number;
@@ -8,7 +8,7 @@ interface CartState {
 const initialState: CartState = {
   itemsCount: 0,
 };
-const axiosInstance = await setUp();
+const axiosInstance = await getAxios();
 const cartSlice = createSlice({
   name: "cart",
   initialState,

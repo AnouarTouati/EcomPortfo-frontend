@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import AxiosContext from "../../../AxiosProvider";
+import AxiosContext from "../../../Axios";
 import { green } from "@mui/material/colors";
 import { AxiosError } from "axios";
 

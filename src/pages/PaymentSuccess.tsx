@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { redirect, useSearchParams } from "react-router-dom";
 import { Box, CircularProgress, Container, Grid } from "@mui/material";
-import AxiosContext from "../AxiosProvider";
+import { getAxios } from "../Axios";
 import { AxiosError } from "axios";
-
+const axiosInstance = await getAxios();
 export const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
   const [progress, setProgress] = useState("loading");
-  const axios = useContext(AxiosContext);
+
   useEffect(() => {
     const stripeSessionId = searchParams.get("session_id");
     if (!stripeSessionId) {
@@ -18,7 +18,7 @@ export const PaymentSuccess = () => {
   }, []);
   async function testSessionIdAgainstDb(stripeSessionId: string) {
     try {
-      const result = await axios.get(`/orders/${stripeSessionId}`);
+      const result = await axiosInstance.get(`/orders/${stripeSessionId}`);
       console.log(result.status);
       if (result.status == 200) {
         setProgress("success");

@@ -22,7 +22,7 @@ import ForgotPassword from "./ForgotPassword";
 
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from "./CustomIcons";
 
-import AxiosContext from "../../AxiosProvider";
+import { getAxios } from "../../Axios";
 import { useNavigate } from "react-router-dom";
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -55,7 +55,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
       "radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))",
   }),
 }));
-
+const axiosInstance = await getAxios();
 export default function SignIn() {
   const mode: PaletteMode = "light";
 
@@ -66,7 +66,7 @@ export default function SignIn() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
-  const axios = React.useContext(AxiosContext);
+
   const navigate = useNavigate();
 
   const handleClickOpen = () => {
@@ -82,9 +82,9 @@ export default function SignIn() {
 
     const data = new FormData(event.currentTarget);
 
-    await axios.get("http://localhost:80/sanctum/csrf-cookie");
+    await axiosInstance.get("http://localhost:80/sanctum/csrf-cookie");
     try {
-      const result = await axios.post("/login", {
+      const result = await axiosInstance.post("/login", {
         email: data.get("email"),
         password: data.get("password"),
         remember_me: data.get("remember_me"),

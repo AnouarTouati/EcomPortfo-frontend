@@ -1,8 +1,9 @@
 import { Card, Container, Grid, Stack, Typography } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import AxiosContext from "../../../AxiosProvider";
+import { getAxios } from "../../../Axios";
 
+const axiosInstance = await getAxios();
 export const Order = () => {
   const status = ["Unpaid", "Paid"];
   // type Product = {
@@ -19,7 +20,7 @@ export const Order = () => {
   //   total: number;
   // };
   type FetchState = "loading" | "show" | "failed";
-  const axios = useContext(AxiosContext);
+
   const { id } = useParams();
   const [fetchState, setFetchState] = useState<FetchState>("loading");
   const [products, setProducts] = useState([1, 2, 3]);
@@ -27,7 +28,7 @@ export const Order = () => {
 
   async function getData() {
     try {
-      const result = await axios.get(`/admin/orders/${id}`);
+      const result = await axiosInstance.get(`/admin/orders/${id}`);
       console.log(result);
       if (result.status >= 300) return setFetchState("failed");
       setFetchState("show");

@@ -22,7 +22,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { Link, OutletProps, useLocation, useNavigate } from "react-router-dom";
 import { Button, Collapse } from "@mui/material";
 import NestedList from "./NestedList";
-import AxiosContext from "../../../AxiosProvider";
+import AxiosContext from "../../../Axios";
 
 const drawerWidth = 240;
 

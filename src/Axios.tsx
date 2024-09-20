@@ -1,7 +1,6 @@
-import { createContext } from "react";
 import axios, { AxiosInstance } from "axios";
 let axiosSingleton: AxiosInstance | null = null;
-export async function setUp() {
+export async function getAxios() {
   if (axiosSingleton) {
     return axiosSingleton;
   }
@@ -26,9 +25,3 @@ export async function setUp() {
   );
   return axiosSingleton;
 }
-//we are using only a context without a provider
-//using provider requires useState and using setState to set an instance of axios causes it to make a random http request and crash
-//on top of that using just a context with a default value like below insures that axios is ready before components try to use it
-//which is not the case with provider with state
-const AxiosContext = createContext<AxiosInstance>(await setUp());
-export default AxiosContext;
