@@ -1,8 +1,7 @@
-# React + Vite
+# React journey
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is part of my current goal of learning React and it ecosystem with Typescript after using VueJS 2 for production.
 
-Currently, two official plugins are available:
+The project currently uses Redux Toolkit, Axios and Material UI with vite as the build tool.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+I am also writing the backend for it using Laravel. Project can be found here **[EcomPortfo-backend](https://github.com/AnouarTouati/EcomPortfo-backend)**.
