@@ -19,9 +19,10 @@ import { getAxios } from "../Axios";
 import { Facebook, Instagram, Twitter } from "@mui/icons-material";
 import simpleGif1 from "../assets/simple.gif";
 import simpleGif2 from "../assets/simple2.gif";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/store";
 import { getItemsCountAsync } from "../store/cart/cartSlice";
+
 type Product = {
   name: string;
   id: number;
@@ -32,6 +33,7 @@ const axiosInstance = await getAxios();
 function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state: RootState) => state.user);
 
   async function getProducts() {
     const result = await axiosInstance.get("/products");
@@ -97,18 +99,22 @@ function Home() {
             <Typography mt={2} mb={2} variant="body1">
               See More ...
             </Typography>
-            <Grid container spacing={2}>
-              {/* <Grid item>
-                <Button variant="contained">Sign Up</Button>
-              </Grid> */}
-              <Grid item>
-                <Button variant="contained">
-                  <Link style={{ color: "white" }} to={"/sign-in"}>
-                    Log In
-                  </Link>
-                </Button>
+            {!user.loggedIn ? (
+              <Grid container spacing={2}>
+                <Grid item>
+                  <Button variant="contained">Sign Up</Button>
+                </Grid>
+                <Grid item>
+                  <Button variant="contained">
+                    <Link style={{ color: "white" }} to={"/sign-in"}>
+                      Log In
+                    </Link>
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
+            ) : (
+              ""
+            )}
           </Box>
           <img
             style={{ height: 450 }}
@@ -141,14 +147,18 @@ function Home() {
             <Typography mt={2} variant="body1">
               See More ...
             </Typography>
-            <Grid container spacing={2}>
-              <Grid item>
-                <Button variant="contained">Sign Up</Button>
+            {!user.loggedIn ? (
+              <Grid container spacing={2}>
+                <Grid item>
+                  <Button variant="contained">Sign Up</Button>
+                </Grid>
+                <Grid item>
+                  <Button variant="contained">Log In</Button>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Button variant="contained">Log In</Button>
-              </Grid>
-            </Grid>
+            ) : (
+              ""
+            )}
           </Box>
         </Stack>
 
