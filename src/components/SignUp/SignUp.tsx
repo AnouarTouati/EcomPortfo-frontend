@@ -20,6 +20,10 @@ import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import { PaletteMode } from "@mui/material";
 
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from "./CustomIcons";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { useNavigate } from "react-router-dom";
+import { getAxios } from "../../Axios";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -51,7 +55,7 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
       "radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))",
   }),
 }));
-
+const axiosInstance = await getAxios();
 export default function SignUp() {
   const mode: PaletteMode = "light";
 
@@ -63,53 +67,51 @@ export default function SignUp() {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [nameError, setNameError] = React.useState(false);
   const [nameErrorMessage, setNameErrorMessage] = React.useState("");
+  const [serverError, setServerError] = React.useState("");
 
-  const validateInputs = () => {
-    const email = document.getElementById("email") as HTMLInputElement;
-    const password = document.getElementById("password") as HTMLInputElement;
-    const name = document.getElementById("name") as HTMLInputElement;
-
-    let isValid = true;
-
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
-      isValid = false;
+  const user = useSelector((state: RootState) => state.user);
+  const navigate = useNavigate();
+  if (user.loggedIn) {
+    if (user.role == "admin") {
+      navigate("/admin");
     } else {
-      setEmailError(false);
-      setEmailErrorMessage("");
+      navigate("/user");
     }
-
-    if (!password.value || password.value.length < 6) {
-      setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
-      isValid = false;
-    } else {
-      setPasswordError(false);
-      setPasswordErrorMessage("");
-    }
-
-    if (!name.value || name.value.length < 1) {
-      setNameError(true);
-      setNameErrorMessage("Name is required.");
-      isValid = false;
-    } else {
-      setNameError(false);
-      setNameErrorMessage("");
-    }
-
-    return isValid;
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  }
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get("name"),
-      lastName: data.get("lastName"),
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    await axiosInstance.get("http://localhost:80/sanctum/csrf-cookie");
+    try {
+      const result = await axiosInstance.post("/sign-up", {
+        name: data.get("name"),
+        email: data.get("email"),
+        password: data.get("password"),
+      });
+
+      if (result.status === 201) {
+        navigate("/user");
+      }
+    } catch (error: any) {
+      if (error.response.status == 422) {
+        if (error.response.data.errors.email ?? false) {
+          setEmailError(true);
+          setEmailErrorMessage(error.response.data.errors.email[0]);
+        }
+        if (error.response.data.errors.password ?? false) {
+          setPasswordError(true);
+          setPasswordErrorMessage(error.response.data.errors.password[0]);
+        }
+        if (error.response.data.errors.name ?? false) {
+          setNameError(true);
+          setNameErrorMessage(error.response.data.errors.name[0]);
+        }
+      } else {
+        setServerError("Something went wrong while signing you up");
+      }
+    }
   };
 
   return (
@@ -133,81 +135,84 @@ export default function SignUp() {
             >
               Sign up
             </Typography>
-            <Box
-              component="form"
-              onSubmit={handleSubmit}
-              sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-            >
-              <FormControl>
-                <FormLabel htmlFor="name">Full name</FormLabel>
-                <TextField
-                  autoComplete="name"
-                  name="name"
-                  required
-                  fullWidth
-                  id="name"
-                  placeholder="Jon Snow"
-                  error={nameError}
-                  helperText={nameErrorMessage}
-                  color={nameError ? "error" : "primary"}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel htmlFor="email">Email</FormLabel>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  placeholder="your@email.com"
-                  name="email"
-                  autoComplete="email"
-                  variant="outlined"
-                  error={emailError}
-                  helperText={emailErrorMessage}
-                  color={passwordError ? "error" : "primary"}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel htmlFor="password">Password</FormLabel>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  placeholder="••••••"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  variant="outlined"
-                  error={passwordError}
-                  helperText={passwordErrorMessage}
-                  color={passwordError ? "error" : "primary"}
-                />
-              </FormControl>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive updates via email."
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onClick={validateInputs}
+
+            {serverError === "" ? (
+              <Box
+                component="form"
+                onSubmit={handleSubmit}
+                sx={{ display: "flex", flexDirection: "column", gap: 2 }}
               >
-                Sign up
-              </Button>
-              <Typography sx={{ textAlign: "center" }}>
-                Already have an account?{" "}
-                <span>
-                  <Link
-                    href="/material-ui/getting-started/templates/sign-in/"
-                    variant="body2"
-                    sx={{ alignSelf: "center" }}
-                  >
-                    Sign in
-                  </Link>
-                </span>
-              </Typography>
-            </Box>
+                <FormControl>
+                  <FormLabel htmlFor="name">Full name</FormLabel>
+                  <TextField
+                    autoComplete="name"
+                    name="name"
+                    required
+                    fullWidth
+                    id="name"
+                    placeholder="Jon Snow"
+                    error={nameError}
+                    helperText={nameErrorMessage}
+                    color={nameError ? "error" : "primary"}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel htmlFor="email">Email</FormLabel>
+                  <TextField
+                    required
+                    fullWidth
+                    id="email"
+                    placeholder="your@email.com"
+                    name="email"
+                    autoComplete="email"
+                    variant="outlined"
+                    error={emailError}
+                    helperText={emailErrorMessage}
+                    color={passwordError ? "error" : "primary"}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel htmlFor="password">Password</FormLabel>
+                  <TextField
+                    required
+                    fullWidth
+                    name="password"
+                    placeholder="••••••"
+                    type="password"
+                    id="password"
+                    autoComplete="new-password"
+                    variant="outlined"
+                    error={passwordError}
+                    helperText={passwordErrorMessage}
+                    color={passwordError ? "error" : "primary"}
+                  />
+                </FormControl>
+                <FormControlLabel
+                  control={
+                    <Checkbox value="allowExtraEmails" color="primary" />
+                  }
+                  label="I want to receive updates via email."
+                />
+                <Button type="submit" fullWidth variant="contained">
+                  Sign up
+                </Button>
+                <Typography sx={{ textAlign: "center" }}>
+                  Already have an account?{" "}
+                  <span>
+                    <Link
+                      href="sign-in"
+                      variant="body2"
+                      sx={{ alignSelf: "center" }}
+                    >
+                      Sign in
+                    </Link>
+                  </span>
+                </Typography>
+              </Box>
+            ) : (
+              serverError
+            )}
+
             <Divider>
               <Typography sx={{ color: "text.secondary" }}>or</Typography>
             </Divider>

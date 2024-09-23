@@ -7,12 +7,14 @@ interface UserState {
   name: string | null;
   email: string | null;
   loggedIn: boolean;
+  role: string | null;
 }
 
 const initialState: UserState = {
   name: "",
   email: "",
   loggedIn: false,
+  role: null,
 };
 const userSlice = createSlice({
   name: "user",
@@ -23,6 +25,7 @@ const userSlice = createSlice({
       state.email = action.payload.email;
       state.name = action.payload.name;
       state.loggedIn = action.payload.loggedIn;
+      state.role = action.payload.role;
     });
   },
 });
@@ -34,12 +37,13 @@ export const getUser = createAsyncThunk("user/getUser", async () => {
         name: result.data.name,
         email: result.data.email,
         loggedIn: true,
+        role: result.data.role,
       };
       return data;
     }
 
     throw new Error();
-  } catch (error) {
+  } catch {
     return initialState;
   }
 });

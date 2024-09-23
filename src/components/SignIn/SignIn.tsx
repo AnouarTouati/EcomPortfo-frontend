@@ -24,6 +24,8 @@ import { GoogleIcon, FacebookIcon, SitemarkIcon } from "./CustomIcons";
 
 import { getAxios } from "../../Axios";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -66,9 +68,16 @@ export default function SignIn() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
-
+  const user = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
 
+  if (user.loggedIn) {
+    if (user.role == "admin") {
+      navigate("/admin");
+    } else {
+      navigate("/user");
+    }
+  }
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -194,7 +203,7 @@ export default function SignIn() {
               Don&apos;t have an account?{" "}
               <span>
                 <Link
-                  href="/material-ui/getting-started/templates/sign-in/"
+                  href="sign-up"
                   variant="body2"
                   sx={{ alignSelf: "center" }}
                 >

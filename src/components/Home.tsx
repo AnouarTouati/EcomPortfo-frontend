@@ -102,7 +102,11 @@ function Home() {
             {!user.loggedIn ? (
               <Grid container spacing={2}>
                 <Grid item>
-                  <Button variant="contained">Sign Up</Button>
+                  <Button variant="contained">
+                    <Link style={{ color: "white" }} to={"/sign-up"}>
+                      Sign Up
+                    </Link>
+                  </Button>
                 </Grid>
                 <Grid item>
                   <Button variant="contained">
@@ -150,10 +154,18 @@ function Home() {
             {!user.loggedIn ? (
               <Grid container spacing={2}>
                 <Grid item>
-                  <Button variant="contained">Sign Up</Button>
+                  <Button variant="contained">
+                    <Link style={{ color: "white" }} to={"/sign-up"}>
+                      Sign Up
+                    </Link>
+                  </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="contained">Log In</Button>
+                  <Button variant="contained">
+                    <Link style={{ color: "white" }} to={"/sign-in"}>
+                      Log In
+                    </Link>
+                  </Button>
                 </Grid>
               </Grid>
             ) : (
