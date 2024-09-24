@@ -17,6 +17,7 @@ import { ProductCreate } from "./components/AdminDashboard/Products/ProductCreat
 import { Order } from "./components/AdminDashboard/Orders/Order.tsx";
 import SignUp from "./components/SignUp/SignUp.tsx";
 import SignIn from "./components/SignIn/SignIn.tsx";
+import { EmailVerification } from "./pages/EmailVerification.tsx";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "payment/failed",
         element: <PaymentFailed />,
+      },
+      {
+        path: "/verify-email/:id/:hash",
+        element: <EmailVerification />,
       },
     ],
   },
