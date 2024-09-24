@@ -18,6 +18,7 @@ import { Link, OutletProps, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import NestedList from "./NestedList";
 import { getAxios } from "../../../Axios";
+import { VerifyEmailBanner } from "../../VerifyEmailBanner";
 
 const drawerWidth = 240;
 
@@ -103,6 +104,7 @@ export default function Sidebar({
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
+
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
@@ -169,6 +171,7 @@ export default function Sidebar({
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
+        <VerifyEmailBanner />
         <Outlet />
       </Main>
     </Box>

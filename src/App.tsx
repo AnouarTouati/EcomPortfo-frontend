@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { NotFound } from "./components/NotFound.js";
@@ -18,6 +18,9 @@ import { Order } from "./components/AdminDashboard/Orders/Order.tsx";
 import SignUp from "./components/SignUp/SignUp.tsx";
 import SignIn from "./components/SignIn/SignIn.tsx";
 import { EmailVerification } from "./pages/EmailVerification.tsx";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "./store/store.ts";
+import { getUser } from "./store/user/userSlice.ts";
 
 const router = createBrowserRouter([
   {
@@ -96,6 +99,11 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, []);
   return <RouterProvider router={router} />;
 };
 export default App;

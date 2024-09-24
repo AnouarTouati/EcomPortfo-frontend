@@ -8,6 +8,7 @@ interface UserState {
   email: string | null;
   loggedIn: boolean;
   role: string | null;
+  emailVerifiedAt: string | null;
 }
 
 const initialState: UserState = {
@@ -15,6 +16,7 @@ const initialState: UserState = {
   email: "",
   loggedIn: false,
   role: null,
+  emailVerifiedAt: null,
 };
 const userSlice = createSlice({
   name: "user",
