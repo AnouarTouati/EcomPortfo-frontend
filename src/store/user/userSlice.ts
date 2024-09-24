@@ -28,6 +28,7 @@ const userSlice = createSlice({
       state.name = action.payload.name;
       state.loggedIn = action.payload.loggedIn;
       state.role = action.payload.role;
+      state.emailVerifiedAt = action.payload.emailVerifiedAt;
     });
   },
 });
@@ -40,6 +41,7 @@ export const getUser = createAsyncThunk("user/getUser", async () => {
         email: result.data.email,
         loggedIn: true,
         role: result.data.role,
+        emailVerifiedAt: result.data.email_verified_at,
       };
       return data;
     }
