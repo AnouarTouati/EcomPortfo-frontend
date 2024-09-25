@@ -21,6 +21,7 @@ import { EmailVerification } from "./pages/EmailVerification.tsx";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "./store/store.ts";
 import { getUser } from "./store/user/userSlice.ts";
+import { PasswordResetLinkSent } from "./pages/PasswordResetLinkSent.tsx";
 
 const router = createBrowserRouter([
   {
@@ -61,8 +62,12 @@ const router = createBrowserRouter([
         element: <PaymentFailed />,
       },
       {
-        path: "/verify-email/:id/:hash",
+        path: "verify-email/:id/:hash",
         element: <EmailVerification />,
+      },
+      {
+        path: "password-reset-link-sent",
+        element: <PasswordResetLinkSent />,
       },
     ],
   },
