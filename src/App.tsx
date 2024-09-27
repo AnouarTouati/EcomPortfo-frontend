@@ -22,6 +22,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "./store/store.ts";
 import { getUser } from "./store/user/userSlice.ts";
 import { PasswordResetLinkSent } from "./pages/PasswordResetLinkSent.tsx";
+import PasswordReset from "./pages/PasswordReset.tsx";
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
       {
         path: "password-reset-link-sent",
         element: <PasswordResetLinkSent />,
+      },
+      {
+        path: "password-reset/:token",
+        element: <PasswordReset />,
       },
     ],
   },
